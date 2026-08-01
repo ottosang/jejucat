@@ -1,1 +1,309 @@
 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제주 감귤밭의 은밀한 수집가, 귤냥이</title>
+    <style>
+        /* 귤냥이 브랜드 컬러 팔레트 */
+        :root {
+            --main-orange: #F58723;
+            --leaf-green: #488C36;
+            --coral-pink: #FF7A7A;
+            --dark-brown: #4A3525;
+            --bg-color: #FDFBF7;
+        }
+
+        /* 기본 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* 네비게이션 바 (헤더) */
+        header {
+            background-color: var(--bg-color);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(74, 53, 37, 0.1);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--main-orange);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+            font-weight: bold;
+        }
+        .nav-links a:hover {
+            color: var(--main-orange);
+        }
+
+        /* 메인 히어로 섹션 */
+        .hero {
+            background-color: var(--main-orange);
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        .hero p {
+            font-size: 20px;
+            font-weight: 300;
+        }
+
+        /* 공통 섹션 스타일 */
+        section {
+            padding: 80px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h2.section-title {
+            text-align: center;
+            font-size: 32px;
+            color: var(--leaf-green);
+            margin-bottom: 50px;
+        }
+
+        /* 탄생 스토리 섹션 */
+        .story-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        .story-text {
+            flex: 1;
+        }
+        .story-text p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .story-image {
+            flex: 1;
+            background-color: #ffe8d4;
+            height: 400px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 4px dashed var(--main-orange);
+            color: var(--main-orange);
+            font-weight: bold;
+        }
+
+        /* 귤냥이 생활 (에피소드) 섹션 */
+        .life-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .life-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 5px solid var(--main-orange);
+        }
+        .life-card h3 {
+            color: var(--main-orange);
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        /* 굿즈 섹션 */
+        .goods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .goods-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .goods-card:hover {
+            transform: translateY(-10px);
+        }
+        .goods-img-placeholder {
+            height: 250px;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+        .goods-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .goods-info h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        .goods-info p {
+            color: var(--main-orange);
+            font-weight: bold;
+        }
+
+        /* 푸터 */
+        footer {
+            background-color: var(--dark-brown);
+            color: var(--bg-color);
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 50px;
+        }
+        .footer-offline {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 14px;
+            color: #cccccc;
+        }
+
+        /* 모바일 반응형 */
+        @media (max-width: 768px) {
+            .story-container {
+                flex-direction: column;
+            }
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 / 로고 -->
+    <header>
+        <div class="logo">
+            🌿 귤냥이
+        </div>
+        <ul class="nav-links">
+            <li><a href="#story">탄생 스토리</a></li>
+            <li><a href="#life">귤냥이의 하루</a></li>
+            <li><a href="#goods">굿즈 스토어</a></li>
+        </ul>
+    </header>
+
+    <!-- 히어로 섹션 -->
+    <section class="hero">
+        <h1>제주 감귤밭의 은밀한 수집가</h1>
+        <p>귤을 너무 많이 먹어 귤색으로 변해버린 귀여운 길냥이를 만나보세요!</p>
+    </section>
+
+    <!-- 탄생 스토리 -->
+    <section id="story">
+        <h2 class="section-title">귤냥이 탄생 스토리</h2>
+        <div class="story-container">
+            <div class="story-image">
+                [ 귤냥이 메인 캐릭터 이미지 들어갈 자리 ]
+            </div>
+            <div class="story-text">
+                <p>따사로운 햇살이 내리쬐는 제주의 한 한적한 감귤밭. 귤냥이는 그곳에서 태어난 평범한 길냥이였습니다.</p>
+                <p>하지만 다른 고양이들이 생선을 쫓아다닐 때, 귤냥이의 시선을 사로잡은 건 바닥에 툭툭 떨어지는 달콤한 감귤이었죠. 매일같이 감귤을 입에 달고 살던 어느 날, 아침에 일어나 보니 원래 하얗던 털이 감귤을 너무 많이 먹은 나머지 <strong>완벽한 주황빛 귤색</strong>으로 변해버렸습니다!</p>
+                <p>심지어 머리 위에는 달콤한 귤을 찾을 때마다 파르르 떨리는 <strong>초록색 귤잎 안테나</strong>까지 생겨났답니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 귤냥이 생활 -->
+    <section id="life">
+        <h2 class="section-title">귤냥이의 은밀한 취미</h2>
+        <div class="life-grid">
+            <div class="life-card">
+                <h3>돌담 은행의 비밀 고객</h3>
+                <p>제주의 검은 현무암 돌담은 귤냥이만의 '감귤 은행'입니다. 상처 하나 없이 동그랗고 예쁜 최상급 귤을 발견하면, 절대 바로 먹지 않고 돌담 구멍 사이사이에 몰래 숨겨둡니다.</p>
+            </div>
+            <div class="life-card">
+                <h3>완벽한 바구니 위장술</h3>
+                <p>귤 수확 철이 되어 사람들이 다가오면, 재빨리 귤 바구니 안으로 뛰어들어 몸을 둥그렇게 맙니다. 완벽한 귤색 털 덕분에 다들 진짜 '대왕 귤'인 줄 알고 속아 넘어간답니다.</p>
+            </div>
+            <div class="life-card">
+                <h3>레이더 이파리</h3>
+                <p>반경 100m 이내에 '당도 12브릭스 이상'의 엄청나게 달콤한 귤이 있으면 머리에 달린 귤잎이 파르르 떨리며 반응합니다. 귤냥이를 따라가면 언제나 맛있는 귤을 찾을 수 있어요!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 굿즈 섹션 -->
+    <section id="goods">
+        <h2 class="section-title">귤냥이 공식 굿즈</h2>
+        <div class="goods-grid">
+            <div class="goods-card">
+                <div class="goods-img-placeholder">[ 인형 키링 이미지 ]</div>
+                <div class="goods-info">
+                    <h4>당도 측정 인형 키링</h4>
+                    <p>잎사귀를 당기면 부르르 떨려요</p>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-img-placeholder">[ 에코백 이미지 ]</div>
+                <div class="goods-info">
+                    <h4>숨겨둔 감귤 에코백</h4>
+                    <p>돌담 틈새 주머니가 포인트!</p>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-img-placeholder">[ 머그컵 이미지 ]</div>
+                <div class="goods-info">
+                    <h4>바구니 위장술 머그컵</h4>
+                    <p>뚜껑 속에 숨어있는 귤냥이</p>
+                </div>
+            </div>
+            <div class="goods-card">
+                <div class="goods-img-placeholder">[ 스티커 팩 이미지 ]</div>
+                <div class="goods-info">
+                    <h4>투명 데코 스티커 팩</h4>
+                    <p>캐리어 & 다이어리 꾸미기용</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <p>&copy; 2026 Gyul-nyangi Character. All rights reserved.</p>
+        <p style="margin-top: 10px;">제주 감귤밭에서 태어난 귤냥이 프로젝트</p>
+        
+        <div class="footer-offline">
+            <p><strong>오프라인에서 귤냥이 굿즈와 포토존을 만나보세요!</strong></p>
+            <p>제주 카페 코델리아 | 옥산 별마루 | 소하스테이</p>
+        </div>
+    </footer>
+
+</body>
+</html>
