@@ -15,8 +15,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background-color: #050608;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      background-color: #06070a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
     #canvas-container {
@@ -35,7 +35,7 @@
     }
 
     /* ====================================================
-       1. 상단 영업 시간 배너 (한글 / 영어)
+       1. 상단 영업 시간 디스플레이 바 (한글 / 영어)
        ==================================================== */
     .business-hours-badge {
       position: absolute;
@@ -44,22 +44,22 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      background: rgba(14, 18, 25, 0.82);
-      backdrop-filter: blur(16px);
+      background: rgba(14, 18, 26, 0.78);
+      backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 12px 24px;
-      border-radius: 35px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 120, 0, 0.15);
-      z-index: 30;
+      padding: 10px 22px;
+      border-radius: 30px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+      z-index: 20;
       animation: fadeInDown 1s ease-out;
     }
 
     .status-dot {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: #00ff88;
-      box-shadow: 0 0 14px #00ff88;
+      box-shadow: 0 0 12px #00ff88;
       animation: pulseGreen 2s infinite ease-in-out;
     }
 
@@ -73,14 +73,14 @@
       font-size: 11px;
       font-weight: 700;
       letter-spacing: 2px;
-      color: #ff9955;
+      color: rgba(255, 255, 255, 0.6);
       text-transform: uppercase;
     }
 
     .hours-val {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.5px;
       color: #ffffff;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
@@ -88,231 +88,146 @@
     .hours-sub {
       font-size: 11px;
       font-weight: 500;
-      color: rgba(255, 255, 255, 0.6);
-      letter-spacing: 0.5px;
+      color: #ff9955;
     }
 
     /* ====================================================
-       2. 생맥주 웰컴 쿠폰 이벤트 모션 카드 (첨부 이미지 1:1 완벽 구현)
+       2. 생맥주 웰컴 쿠폰 이벤트 모션 배너 (하단 우측 플로팅)
        ==================================================== */
-    .coupon-card {
+    .event-banner-card {
       position: absolute;
       bottom: 26px;
       right: 36px;
-      width: 500px;
-      background: linear-gradient(135deg, rgba(62, 77, 43, 0.95) 0%, rgba(38, 48, 28, 0.96) 100%);
-      border: 1.5px solid rgba(185, 220, 115, 0.45);
+      width: 440px;
+      background: linear-gradient(135deg, rgba(38, 48, 28, 0.90) 0%, rgba(18, 24, 15, 0.92) 100%);
+      border: 1.5px solid rgba(160, 205, 95, 0.4);
       border-radius: 20px;
-      backdrop-filter: blur(18px);
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(110, 160, 50, 0.25);
-      padding: 16px 20px 14px 20px;
-      z-index: 30;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(110, 160, 50, 0.2);
+      padding: 16px 20px;
+      z-index: 20;
       display: flex;
       flex-direction: column;
       gap: 10px;
+      transition: transform 0.15s ease-out;
       transform-origin: bottom right;
-      transition: transform 0.1s ease-out;
     }
 
-    /* 상단 브랜드 헤더 */
-    .cc-header {
+    /* 쿠폰 헤더 */
+    .eb-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
       padding-bottom: 8px;
     }
 
-    .cc-brand-wrap {
+    .eb-brand {
       display: flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .cc-hotel-tag {
+    .eb-hotel {
       font-size: 11px;
       font-weight: 800;
-      color: #e2f89f;
+      color: #c9e88d;
       letter-spacing: 1px;
-      border: 1px solid rgba(226, 248, 159, 0.6);
-      padding: 1px 6px;
-      border-radius: 4px;
     }
 
-    .cc-title {
-      font-size: 22px;
+    .eb-title {
+      font-size: 18px;
       font-weight: 900;
+      letter-spacing: 0.5px;
       color: #ffffff;
-      letter-spacing: -0.5px;
       text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
-    .takeout-badge {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      background: #e66000;
-      color: #ffffff;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
+    .eb-takeout-tag {
+      background: #ff7700;
+      color: #fff;
+      font-size: 10px;
       font-weight: 800;
-      box-shadow: 0 0 12px rgba(230, 96, 0, 0.5);
-      animation: pulseTakeout 2s infinite ease-in-out;
+      padding: 3px 8px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 119, 0, 0.4);
+      animation: pulseBadge 2.2s infinite;
     }
 
-    /* 본체: 안내문구 + 맥주/나초 모션 비주얼 + 가격 */
-    .cc-body {
+    /* 쿠폰 비주얼 콘텐츠 */
+    .eb-body {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       gap: 10px;
     }
 
-    .cc-rules {
-      font-size: 10px;
-      line-height: 1.45;
-      color: rgba(255, 255, 255, 0.85);
-      max-width: 175px;
-    }
-
-    .cc-rules p {
-      position: relative;
-      padding-left: 9px;
-      margin-bottom: 2px;
-    }
-
-    .cc-rules p::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: #ffcc00;
-    }
-
-    .cc-rules .rule-en {
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 9px;
-      line-height: 1.3;
-    }
-
-    /* 맥주 & 나초 그래픽 영역 */
-    .cc-visuals {
+    .eb-items-visual {
       display: flex;
       align-items: center;
       gap: 6px;
-      margin-right: 4px;
     }
 
-    .beer-glass {
-      width: 42px;
-      height: 72px;
+    .beer-icon-wrap {
       position: relative;
-      background: linear-gradient(180deg, #ffe57f 0%, #ffaa00 70%, #d48000 100%);
-      border-radius: 4px 4px 8px 8px;
-      border: 2px solid rgba(255, 255, 255, 0.8);
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 6px 16px rgba(255, 170, 0, 0.4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: beerFloat 2.6s ease-in-out infinite alternate;
+      font-size: 32px;
+      filter: drop-shadow(0 4px 10px rgba(255, 180, 0, 0.4));
+      animation: floatBeer 2.4s ease-in-out infinite alternate;
     }
 
-    .beer-foam {
-      position: absolute;
-      top: -10px;
-      width: 48px;
-      height: 16px;
-      background: #ffffff;
-      border-radius: 12px 12px 6px 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    .nacho-icon-wrap {
+      font-size: 30px;
+      filter: drop-shadow(0 4px 10px rgba(255, 160, 0, 0.35));
+      animation: floatNacho 2.8s ease-in-out infinite alternate;
     }
 
-    .beer-label {
-      margin-top: 24px;
-      background: #00753b;
-      color: #ffffff;
-      font-size: 8px;
+    .plus-sign {
+      color: rgba(255, 255, 255, 0.6);
       font-weight: 900;
-      padding: 1px 4px;
-      border-radius: 2px;
-      letter-spacing: 0.5px;
+      font-size: 16px;
     }
 
-    .plus-badge {
-      font-size: 15px;
-      font-weight: 900;
-      color: #ffffff;
-      text-shadow: 0 0 6px rgba(0,0,0,0.6);
-    }
-
-    .nacho-plate {
-      width: 52px;
-      height: 52px;
-      background: radial-gradient(circle, #ffe17d 20%, #e0931f 80%);
-      clip-path: polygon(50% 0%, 90% 85%, 10% 85%);
-      box-shadow: 0 6px 14px rgba(224, 147, 31, 0.4);
-      position: relative;
-      animation: nachoFloat 3s ease-in-out infinite alternate;
-    }
-
-    .nacho-plate::after {
-      content: "";
-      position: absolute;
-      top: 14px;
-      left: 10px;
-      width: 32px;
-      height: 32px;
-      background: #f7a828;
-      clip-path: polygon(50% 0%, 90% 85%, 10% 85%);
-      opacity: 0.8;
-    }
-
-    /* 가격 섹션 */
-    .cc-pricing {
+    .eb-info {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
     }
 
-    .cc-combo-txt {
-      font-size: 11px;
+    .eb-desc-kr {
+      font-size: 13px;
       font-weight: 800;
       color: #ffffff;
       text-align: right;
     }
 
-    .cc-price-won {
-      font-size: 32px;
-      font-weight: 900;
-      color: #ffeb3b;
-      text-shadow: 0 0 16px rgba(255, 235, 59, 0.6);
-      letter-spacing: -1px;
-      line-height: 1;
-      margin-top: 4px;
+    .eb-desc-en {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.65);
+      text-align: right;
     }
 
-    /* 하단 장소 안내 바 */
-    .cc-footer {
-      border-top: 1px dashed rgba(255, 255, 255, 0.2);
-      padding-top: 7px;
+    .eb-price {
+      font-size: 26px;
+      font-weight: 900;
+      color: #ffdc33;
+      text-shadow: 0 0 14px rgba(255, 220, 50, 0.5);
+      margin-top: 2px;
+    }
+
+    .eb-footer {
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      padding-top: 6px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 11px;
+      font-size: 10.5px;
+      color: rgba(255, 255, 255, 0.7);
     }
 
-    .cc-loc-kr {
-      background: rgba(255, 255, 255, 0.95);
-      color: #243015;
-      font-weight: 800;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-
-    .cc-loc-en {
-      color: #e5f7ba;
-      font-weight: 600;
-      font-size: 10px;
+    .eb-location {
+      color: #d8f59d;
+      font-weight: 700;
     }
 
     /* ====================================================
@@ -423,21 +338,22 @@
       opacity: 1;
     }
 
+    /* 애니메이션 */
     @keyframes pulseGreen {
       0%, 100% { transform: scale(1); opacity: 0.9; }
       50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 16px #00ff88; }
     }
-    @keyframes pulseTakeout {
+    @keyframes pulseBadge {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); filter: brightness(1.2); }
+      50% { transform: scale(1.06); filter: brightness(1.15); }
     }
-    @keyframes beerFloat {
-      0% { transform: translateY(0) rotate(-3deg); }
-      100% { transform: translateY(-8px) rotate(4deg); }
+    @keyframes floatBeer {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-7px) rotate(4deg); }
     }
-    @keyframes nachoFloat {
-      0% { transform: translateY(0) rotate(4deg); }
-      100% { transform: translateY(-7px) rotate(-3deg); }
+    @keyframes floatNacho {
+      0% { transform: translateY(0) rotate(3deg); }
+      100% { transform: translateY(-6px) rotate(-4deg); }
     }
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-20px); }
@@ -447,7 +363,7 @@
 </head>
 <body>
 
-  <!-- 메인 비주얼라이저 캔버스 -->
+  <!-- 메인 캔버스 -->
   <div id="canvas-container">
     <canvas id="visualizer"></canvas>
   </div>
@@ -456,57 +372,42 @@
   <div class="business-hours-badge">
     <div class="status-dot"></div>
     <div class="hours-text">
-      <div class="hours-title">CORDELIA STORE HOURS</div>
-      <div class="hours-val">OPEN 15:00 ~ 24:00 (오픈 15:00 닫음 24:00)</div>
+      <div class="hours-title">OPEN 15:00 ~ 24:00</div>
+      <div class="hours-val">매장 영업시간 15:00 - 24:00</div>
       <div class="hours-sub">Business Hours : 3:00 PM – 12:00 AM</div>
     </div>
   </div>
 
   <!-- 2. 생맥주 웰컴 쿠폰 이벤트 모션 배너 (하단 우측) -->
-  <div class="coupon-card" id="couponCard">
-    <div class="cc-header">
-      <div class="cc-brand-wrap">
-        <span class="cc-hotel-tag">HOTEL CORDELIA</span>
-        <span class="cc-title">Welcome Beer Coupon</span>
+  <div class="event-banner-card" id="eventCard">
+    <div class="eb-header">
+      <div class="eb-brand">
+        <span class="eb-hotel">CORDELIA</span>
+        <span class="eb-title">Welcome Beer Coupon</span>
       </div>
-      <div class="takeout-badge">🛍️ 포장가능 TAKE OUT</div>
+      <span class="eb-takeout-tag">포장가능 TAKE OUT</span>
     </div>
-    
-    <div class="cc-body">
-      <div class="cc-rules">
-        <p>쿠폰 1매당 1회 사용</p>
-        <p>주류 판매로 인해 미성년자 이용 불가</p>
-        <p>체크아웃 일까지 사용가능 (비정기 행사)</p>
-        <p class="rule-en">Use once per coupon • No use for minors • Available until check-out</p>
+    <div class="eb-body">
+      <div class="eb-items-visual">
+        <div class="beer-icon-wrap" title="TERRA Draft Beer">🍺</div>
+        <span class="plus-sign">+</span>
+        <div class="beer-icon-wrap" style="animation-delay: -1.2s;">🍺</div>
+        <span class="plus-sign">+</span>
+        <div class="nacho-icon-wrap" title="Crispy Nachos">🧀</div>
       </div>
-
-      <div class="cc-visuals">
-        <div class="beer-glass">
-          <div class="beer-foam"></div>
-          <span class="beer-label">TERRA</span>
-        </div>
-        <span class="plus-badge">+</span>
-        <div class="beer-glass" style="animation-delay: -1.3s;">
-          <div class="beer-foam"></div>
-          <span class="beer-label">TERRA</span>
-        </div>
-        <span class="plus-badge">+</span>
-        <div class="nacho-plate" title="바삭 나초"></div>
-      </div>
-
-      <div class="cc-pricing">
-        <div class="cc-combo-txt">테라 2잔 + 바삭 나초 세트</div>
-        <div class="cc-price-won">₩ 10,000</div>
+      <div class="eb-info">
+        <div class="eb-desc-kr">테라 생맥주 2잔 + 바삭 나초 세트</div>
+        <div class="eb-desc-en">2 Draft Beers + Crispy Nacho Set</div>
+        <div class="eb-price">₩ 10,000</div>
       </div>
     </div>
-
-    <div class="cc-footer">
-      <span class="cc-loc-kr">코델리아호텔 1층 | 카페 &amp; 펍 코델리아</span>
-      <span class="cc-loc-en">Cordelia Hotel 1st floor / cafe &amp; pub Cordelia</span>
+    <div class="eb-footer">
+      <span class="eb-location">📍 코델리아호텔 1층 | 카페 & 펍 코델리아</span>
+      <span>1st Floor / Cafe & Pub Cordelia</span>
     </div>
   </div>
 
-  <!-- 토스트 안내창 -->
+  <!-- 안내 토스트 메시지 -->
   <div id="status-toast"></div>
 
   <!-- 3. 컨트롤 툴바 -->
@@ -537,7 +438,7 @@
     const ctx = canvas.getContext('2d');
     const controls = document.getElementById('controls');
     const toast = document.getElementById('status-toast');
-    const couponCard = document.getElementById('couponCard');
+    const eventCard = document.getElementById('eventCard');
 
     let width, height;
     function resize() {
@@ -553,7 +454,7 @@
       setTimeout(() => toast.classList.remove('show'), duration);
     }
 
-    // 마우스 미동작 시 하단 버튼만 숨김 (영업시간 & 쿠폰 카드는 상시 노출)
+    // 마우스 미동작 시 하단 툴바만 부드럽게 숨김 (이벤트 카드/영업시간은 유지)
     let idleTimer = null;
     function resetIdleTimer() {
       controls.classList.remove('hidden');
@@ -566,7 +467,7 @@
     resetIdleTimer();
 
     // ==========================================
-    // 오디오 처리 엔진 (Web Audio API)
+    // 오디오 분석 엔진
     // ==========================================
     let audioCtx = null;
     let analyser = null;
@@ -680,7 +581,7 @@
       }
     });
 
-    // 파티클 & 충격파 데이터
+    // 비주얼라이저 파티클 & 충격파
     const particles = [];
     for (let i = 0; i < 90; i++) {
       particles.push({
@@ -726,16 +627,16 @@
       midSmooth += (mid - midSmooth) * 0.2;
       trebleSmooth += (treble - trebleSmooth) * 0.16;
 
-      // 킥 비트 감지 시 충격파 생성
+      // 킥 감지 시 충격파 생성
       if (bassSmooth > 0.42 && bassSmooth - prevBass > 0.14) {
         shockwaves.push({ r: 90, opacity: 0.9, width: 4.5 });
       }
       prevBass = bassSmooth;
 
-      // 쿠폰 카드가 음악의 베이스 비트에 반응하여 미세하게 펌핑 모션
-      if (couponCard) {
-        const cardScale = 1 + (bassSmooth * 0.038);
-        couponCard.style.transform = `scale(${cardScale})`;
+      // 생맥주 이벤트 배너 카드도 베이스 비트에 반응하여 살짝 펌핑 모션
+      if (eventCard) {
+        const cardScale = 1 + (bassSmooth * 0.035);
+        eventCard.style.transform = `scale(${cardScale})`;
       }
 
       const cx = width / 2;
@@ -890,14 +791,14 @@
         }
       }
 
-      // 5. 타이포그래피 (상단 CORDELIA + 중앙 메인 대형 JBL PREMIUM SOUND ZONE)
+      // 5. 타이포그래피 (CORDELIA 서브 + JBL PREMIUM SOUND ZONE 메인 강조)
       ctx.save();
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
       const textScale = 1 + (bassSmooth * 0.07);
 
-      // (1) 상단 CORDELIA 라벨
+      // (1) 상단 코델리아 라벨
       ctx.save();
       ctx.translate(cx, cy - 36);
       ctx.scale(textScale, textScale);
@@ -929,7 +830,7 @@
       ctx.fillText('JBL PREMIUM SOUND ZONE', 4, 0);
       ctx.restore();
 
-      // (3) 하단 슬릭 데코 라인
+      // (3) 하단 라벨
       ctx.save();
       ctx.translate(cx, cy + 56);
       ctx.scale(textScale, textScale);
@@ -953,7 +854,7 @@
 
       ctx.restore();
 
-      // 6. 앰비언트 부유 파티클
+      // 6. 파티클
       ctx.save();
       for (const p of particles) {
         p.x += p.speedX * (1 + trebleSmooth * 2);
