@@ -1,205 +1,978 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제주 감귤밭의 은밀한 수집가, 귤냥이</title>
-    <style>
-        :root {
-            --main-orange: #F58723;
-            --leaf-green: #488C36;
-            --coral-pink: #FF7A7A;
-            --dark-brown: #4A3525;
-            --bg-color: #FDFBF7;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CORDELIA x JBL PREMIUM SOUND ZONE</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #050608;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-        }
-        body {
-            background-color: var(--bg-color);
-            color: var(--dark-brown);
-            line-height: 1.6;
-        }
-        a { text-decoration: none; color: inherit; }
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
 
-        /* Header */
-        header {
-            background-color: var(--bg-color);
-            padding: 20px 50px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(74, 53, 37, 0.1);
-        }
-        .logo { font-size: 24px; font-weight: bold; color: var(--main-orange); }
-        .nav-links { list-style: none; display: flex; gap: 30px; font-weight: bold; }
-        .nav-links a:hover { color: var(--main-orange); }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
-        /* Hero */
-        .hero {
-            background-color: var(--main-orange);
-            color: white;
-            text-align: center;
-            padding: 100px 20px;
-        }
-        .hero h1 { font-size: 48px; margin-bottom: 20px; }
-        .hero p { font-size: 20px; font-weight: 300; }
+    /* ====================================================
+       1. 상단 영업 시간 배너 (한글 / 영어)
+       ==================================================== */
+    .business-hours-badge {
+      position: absolute;
+      top: 26px;
+      left: 36px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(14, 18, 25, 0.82);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 12px 24px;
+      border-radius: 35px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 15px rgba(255, 120, 0, 0.15);
+      z-index: 30;
+      animation: fadeInDown 1s ease-out;
+    }
 
-        /* Section Layout */
-        section { padding: 80px 50px; max-width: 1200px; margin: 0 auto; }
-        h2.section-title {
-            text-align: center;
-            font-size: 32px;
-            color: var(--leaf-green);
-            margin-bottom: 50px;
-        }
+    .status-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 14px #00ff88;
+      animation: pulseGreen 2s infinite ease-in-out;
+    }
 
-        /* Story */
-        .story-container { display: flex; align-items: center; gap: 50px; }
-        .story-text { flex: 1; font-size: 18px; }
-        .story-text p { margin-bottom: 20px; }
-        .story-image img {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 20px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border: 4px solid var(--main-orange);
-        }
+    .hours-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-        /* Gallery (New Idea) */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-        }
-        .gallery-item {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        .gallery-item:hover { transform: translateY(-10px); }
-        .gallery-item img { width: 100%; border-radius: 10px; margin-bottom: 15px; }
-        .gallery-item h4 { color: var(--main-orange); }
+    .hours-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #ff9955;
+      text-transform: uppercase;
+    }
 
-        /* Spots (New Idea) */
-        .spots-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        .spot-card {
-            background: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            text-align: center;
-            border-top: 6px solid var(--leaf-green);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-        .spot-card h3 { font-size: 24px; margin-bottom: 15px; color: var(--dark-brown); }
-        .spot-card p { color: #666; font-size: 16px; }
+    .hours-val {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
 
-        /* Footer */
-        footer {
-            background-color: var(--dark-brown);
-            color: var(--bg-color);
-            text-align: center;
-            padding: 50px 20px;
-        }
+    .hours-sub {
+      font-size: 11px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.6);
+      letter-spacing: 0.5px;
+    }
 
-        @media (max-width: 768px) {
-            .story-container { flex-direction: column; }
-            header { flex-direction: column; gap: 15px; }
-            .hero h1 { font-size: 32px; }
-        }
-    </style>
+    /* ====================================================
+       2. 생맥주 웰컴 쿠폰 이벤트 모션 카드 (첨부 이미지 1:1 완벽 구현)
+       ==================================================== */
+    .coupon-card {
+      position: absolute;
+      bottom: 26px;
+      right: 36px;
+      width: 500px;
+      background: linear-gradient(135deg, rgba(62, 77, 43, 0.95) 0%, rgba(38, 48, 28, 0.96) 100%);
+      border: 1.5px solid rgba(185, 220, 115, 0.45);
+      border-radius: 20px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.75), 0 0 30px rgba(110, 160, 50, 0.25);
+      padding: 16px 20px 14px 20px;
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transform-origin: bottom right;
+      transition: transform 0.1s ease-out;
+    }
+
+    /* 상단 브랜드 헤더 */
+    .cc-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      padding-bottom: 8px;
+    }
+
+    .cc-brand-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .cc-hotel-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: #e2f89f;
+      letter-spacing: 1px;
+      border: 1px solid rgba(226, 248, 159, 0.6);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .cc-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .takeout-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #e66000;
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 0 12px rgba(230, 96, 0, 0.5);
+      animation: pulseTakeout 2s infinite ease-in-out;
+    }
+
+    /* 본체: 안내문구 + 맥주/나초 모션 비주얼 + 가격 */
+    .cc-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cc-rules {
+      font-size: 10px;
+      line-height: 1.45;
+      color: rgba(255, 255, 255, 0.85);
+      max-width: 175px;
+    }
+
+    .cc-rules p {
+      position: relative;
+      padding-left: 9px;
+      margin-bottom: 2px;
+    }
+
+    .cc-rules p::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: #ffcc00;
+    }
+
+    .cc-rules .rule-en {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 9px;
+      line-height: 1.3;
+    }
+
+    /* 맥주 & 나초 그래픽 영역 */
+    .cc-visuals {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-right: 4px;
+    }
+
+    .beer-glass {
+      width: 42px;
+      height: 72px;
+      position: relative;
+      background: linear-gradient(180deg, #ffe57f 0%, #ffaa00 70%, #d48000 100%);
+      border-radius: 4px 4px 8px 8px;
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.5), 0 6px 16px rgba(255, 170, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: beerFloat 2.6s ease-in-out infinite alternate;
+    }
+
+    .beer-foam {
+      position: absolute;
+      top: -10px;
+      width: 48px;
+      height: 16px;
+      background: #ffffff;
+      border-radius: 12px 12px 6px 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .beer-label {
+      margin-top: 24px;
+      background: #00753b;
+      color: #ffffff;
+      font-size: 8px;
+      font-weight: 900;
+      padding: 1px 4px;
+      border-radius: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .plus-badge {
+      font-size: 15px;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 0 6px rgba(0,0,0,0.6);
+    }
+
+    .nacho-plate {
+      width: 52px;
+      height: 52px;
+      background: radial-gradient(circle, #ffe17d 20%, #e0931f 80%);
+      clip-path: polygon(50% 0%, 90% 85%, 10% 85%);
+      box-shadow: 0 6px 14px rgba(224, 147, 31, 0.4);
+      position: relative;
+      animation: nachoFloat 3s ease-in-out infinite alternate;
+    }
+
+    .nacho-plate::after {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 10px;
+      width: 32px;
+      height: 32px;
+      background: #f7a828;
+      clip-path: polygon(50% 0%, 90% 85%, 10% 85%);
+      opacity: 0.8;
+    }
+
+    /* 가격 섹션 */
+    .cc-pricing {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .cc-combo-txt {
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      text-align: right;
+    }
+
+    .cc-price-won {
+      font-size: 32px;
+      font-weight: 900;
+      color: #ffeb3b;
+      text-shadow: 0 0 16px rgba(255, 235, 59, 0.6);
+      letter-spacing: -1px;
+      line-height: 1;
+      margin-top: 4px;
+    }
+
+    /* 하단 장소 안내 바 */
+    .cc-footer {
+      border-top: 1px dashed rgba(255, 255, 255, 0.2);
+      padding-top: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+    }
+
+    .cc-loc-kr {
+      background: rgba(255, 255, 255, 0.95);
+      color: #243015;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .cc-loc-en {
+      color: #e5f7ba;
+      font-weight: 600;
+      font-size: 10px;
+    }
+
+    /* ====================================================
+       3. 하단 컨트롤 툴바 (3.5초 미사용 시 숨김)
+       ==================================================== */
+    .controls {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(14, 17, 24, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      padding: 10px 20px;
+      border-radius: 40px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+      z-index: 100;
+    }
+
+    .controls.hidden {
+      opacity: 0;
+      transform: translateX(-50%) translateY(35px);
+      pointer-events: none;
+    }
+
+    .btn {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn.primary {
+      background: #ff4500;
+      border-color: #ff6a33;
+      box-shadow: 0 0 18px rgba(255, 69, 0, 0.5);
+    }
+
+    .btn.primary:hover {
+      background: #e63e00;
+    }
+
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #ccc;
+      font-size: 12px;
+      padding: 0 6px;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 80px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.25);
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ff4500;
+      cursor: pointer;
+    }
+
+    #status-toast {
+      position: absolute;
+      top: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 12, 18, 0.88);
+      color: #eee;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 9px 24px;
+      border-radius: 22px;
+      font-size: 13px;
+      backdrop-filter: blur(10px);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 120;
+    }
+
+    #status-toast.show {
+      opacity: 1;
+    }
+
+    @keyframes pulseGreen {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 16px #00ff88; }
+    }
+    @keyframes pulseTakeout {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); filter: brightness(1.2); }
+    }
+    @keyframes beerFloat {
+      0% { transform: translateY(0) rotate(-3deg); }
+      100% { transform: translateY(-8px) rotate(4deg); }
+    }
+    @keyframes nachoFloat {
+      0% { transform: translateY(0) rotate(4deg); }
+      100% { transform: translateY(-7px) rotate(-3deg); }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">🌿 귤냥이 (Gyul-nyangi)</div>
-        <ul class="nav-links">
-            <li><a href="#story">탄생 스토리</a></li>
-            <li><a href="#emoticon">이모티콘 갤러리</a></li>
-            <li><a href="#spots">귤냥이 출몰 지역</a></li>
-        </ul>
-    </header>
+  <!-- 메인 비주얼라이저 캔버스 -->
+  <div id="canvas-container">
+    <canvas id="visualizer"></canvas>
+  </div>
 
-    <section class="hero">
-        <h1>제주 감귤밭의 은밀한 수집가</h1>
-        <p>귤을 너무 많이 먹어 귤색으로 변해버린 귀여운 길냥이를 만나보세요!</p>
-    </section>
+  <!-- 1. 매장 영업 시간 (상단 좌측) -->
+  <div class="business-hours-badge">
+    <div class="status-dot"></div>
+    <div class="hours-text">
+      <div class="hours-title">CORDELIA STORE HOURS</div>
+      <div class="hours-val">OPEN 15:00 ~ 24:00 (오픈 15:00 닫음 24:00)</div>
+      <div class="hours-sub">Business Hours : 3:00 PM – 12:00 AM</div>
+    </div>
+  </div>
 
-    <section id="story">
-        <h2 class="section-title">귤냥이 탄생 스토리</h2>
-        <div class="story-container">
-            <div class="story-image">
-                <!-- 깃허브에 main.png 이름으로 이미지를 올리면 여기에 나타납니다 -->
-                <img src="main.png" alt="귤냥이 메인 이미지">
-            </div>
-            <div class="story-text">
-                <p>따사로운 햇살이 내리쬐는 제주의 한 한적한 감귤밭. 귤냥이는 그곳에서 태어난 평범한 길냥이였습니다.</p>
-                <p>다른 고양이들이 생선을 쫓아다닐 때, 귤냥이의 시선을 사로잡은 건 바닥에 툭툭 떨어지는 달콤한 감귤이었죠. 매일같이 감귤을 입에 달고 살던 어느 날, 아침에 일어나 보니 털이 <strong>완벽한 주황빛 귤색</strong>으로 변해버렸습니다!</p>
-                <p>심지어 머리 위에는 반경 100m 이내의 고당도 귤을 찾아내는 <strong>초록색 귤잎 안테나</strong>까지 생겨났답니다. 지금도 제주의 돌담 사이사이에 가장 좋아하는 귤을 몰래 숨겨두는 은밀한 취미를 즐기고 있습니다.</p>
-            </div>
+  <!-- 2. 생맥주 웰컴 쿠폰 이벤트 모션 배너 (하단 우측) -->
+  <div class="coupon-card" id="couponCard">
+    <div class="cc-header">
+      <div class="cc-brand-wrap">
+        <span class="cc-hotel-tag">HOTEL CORDELIA</span>
+        <span class="cc-title">Welcome Beer Coupon</span>
+      </div>
+      <div class="takeout-badge">🛍️ 포장가능 TAKE OUT</div>
+    </div>
+    
+    <div class="cc-body">
+      <div class="cc-rules">
+        <p>쿠폰 1매당 1회 사용</p>
+        <p>주류 판매로 인해 미성년자 이용 불가</p>
+        <p>체크아웃 일까지 사용가능 (비정기 행사)</p>
+        <p class="rule-en">Use once per coupon • No use for minors • Available until check-out</p>
+      </div>
+
+      <div class="cc-visuals">
+        <div class="beer-glass">
+          <div class="beer-foam"></div>
+          <span class="beer-label">TERRA</span>
         </div>
-    </section>
-
-    <section id="emoticon">
-        <h2 class="section-title">출시 예정! 카카오톡 이모티콘 갤러리</h2>
-        <p style="text-align: center; margin-bottom: 40px; font-size: 18px;">귤냥이의 다이내믹한 하루를 이모티콘으로 만나보세요.</p>
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="emo1.png" alt="행복해">
-                <h4>행복해냥</h4>
-            </div>
-            <div class="gallery-item">
-                <img src="emo2.png" alt="화나">
-                <h4>화난다냥</h4>
-            </div>
-            <div class="gallery-item">
-                <img src="emo3.png" alt="돌담">
-                <h4>돌담에 숨었냥</h4>
-            </div>
-            <div class="gallery-item">
-                <img src="emo4.png" alt="서핑">
-                <h4>제주 서핑냥</h4>
-            </div>
+        <span class="plus-badge">+</span>
+        <div class="beer-glass" style="animation-delay: -1.3s;">
+          <div class="beer-foam"></div>
+          <span class="beer-label">TERRA</span>
         </div>
-    </section>
+        <span class="plus-badge">+</span>
+        <div class="nacho-plate" title="바삭 나초"></div>
+      </div>
 
-    <section id="spots">
-        <h2 class="section-title">귤냥이 오프라인 출몰 지역</h2>
-        <p style="text-align: center; margin-bottom: 40px; font-size: 18px;">제주 곳곳에 숨어있는 귤냥이 포토존을 직접 찾아보세요!</p>
-        <div class="spots-grid">
-            <div class="spot-card">
-                <h3>☕ 카페 코델리아</h3>
-                <p>시그니처 감귤 음료와 함께<br>음료를 노리는 귤냥이를 만날 수 있어요.</p>
-            </div>
-            <div class="spot-card">
-                <h3>🏡 옥산 별마루</h3>
-                <p>프라이빗한 휴식 공간 돌담 어딘가에<br>귤냥이가 귤을 숨겨두었을지도 몰라요.</p>
-            </div>
-            <div class="spot-card">
-                <h3>✨ 소하스테이</h3>
-                <p>감성 가득한 숙소 곳곳에 숨어있는<br>귤냥이의 흔적을 찾아보세요.</p>
-            </div>
-        </div>
-    </section>
+      <div class="cc-pricing">
+        <div class="cc-combo-txt">테라 2잔 + 바삭 나초 세트</div>
+        <div class="cc-price-won">₩ 10,000</div>
+      </div>
+    </div>
 
-    <footer>
-        <p>&copy; 2026 Gyul-nyangi Character Project. All rights reserved.</p>
-        <p style="margin-top: 10px; font-size: 14px; color: #aaa;">제주 감귤밭에서 시작된 작은 기적</p>
-    </footer>
+    <div class="cc-footer">
+      <span class="cc-loc-kr">코델리아호텔 1층 | 카페 &amp; 펍 코델리아</span>
+      <span class="cc-loc-en">Cordelia Hotel 1st floor / cafe &amp; pub Cordelia</span>
+    </div>
+  </div>
 
+  <!-- 토스트 안내창 -->
+  <div id="status-toast"></div>
+
+  <!-- 3. 컨트롤 툴바 -->
+  <div class="controls" id="controls">
+    <button class="btn primary" id="btn-system-audio" title="윈도우 노트북 소리 연동">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
+      시스템 오디오 연동
+    </button>
+    <button class="btn" id="btn-mic">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+      마이크 연동
+    </button>
+    <button class="btn" id="btn-demo">데모 비트</button>
+
+    <div class="slider-group">
+      <span>감도</span>
+      <input type="range" id="sensitivity" min="0.5" max="4.0" step="0.1" value="2.2">
+    </div>
+
+    <button class="btn" id="btn-fullscreen">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+      전체화면
+    </button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('visualizer');
+    const ctx = canvas.getContext('2d');
+    const controls = document.getElementById('controls');
+    const toast = document.getElementById('status-toast');
+    const couponCard = document.getElementById('couponCard');
+
+    let width, height;
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function showToast(msg, duration = 3000) {
+      toast.innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), duration);
+    }
+
+    // 마우스 미동작 시 하단 버튼만 숨김 (영업시간 & 쿠폰 카드는 상시 노출)
+    let idleTimer = null;
+    function resetIdleTimer() {
+      controls.classList.remove('hidden');
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        controls.classList.add('hidden');
+      }, 3500);
+    }
+    window.addEventListener('mousemove', resetIdleTimer);
+    resetIdleTimer();
+
+    // ==========================================
+    // 오디오 처리 엔진 (Web Audio API)
+    // ==========================================
+    let audioCtx = null;
+    let analyser = null;
+    let dataArray = null;
+    let sensitivity = 2.2;
+
+    document.getElementById('sensitivity').addEventListener('input', (e) => {
+      sensitivity = parseFloat(e.target.value);
+    });
+
+    function setupAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 1024;
+        analyser.smoothingTimeConstant = 0.78;
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // 시스템 오디오 연동 (윈도우 소리 캡처)
+    document.getElementById('btn-system-audio').addEventListener('click', async () => {
+      try {
+        setupAudioContext();
+        showToast("공유 창에서 [전체 화면] 선택 후 좌측 하단 '시스템 오디오 공유'를 꼭 체크해주세요!");
+
+        const stream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false
+          }
+        });
+
+        const audioTracks = stream.getAudioTracks();
+        if (audioTracks.length === 0) {
+          showToast("⚠️ '오디오 공유'가 체크되지 않았습니다. 다시 시도해주세요.");
+          return;
+        }
+
+        const source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        showToast("🎵 시스템 사운드 연동 완료!");
+      } catch (err) {
+        console.error(err);
+        showToast("연동 취소됨 또는 권한 오류");
+      }
+    });
+
+    // 마이크 연동
+    document.getElementById('btn-mic').addEventListener('click', async () => {
+      try {
+        setupAudioContext();
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const source = audioCtx.createMediaStreamSource(stream);
+        source.connect(analyser);
+        showToast("🎤 마이크 오디오 연동 완료");
+      } catch (err) {
+        console.error(err);
+        showToast("마이크 권한을 허용해주세요.");
+      }
+    });
+
+    // 데모 비트
+    let demoPlaying = false;
+    document.getElementById('btn-demo').addEventListener('click', () => {
+      setupAudioContext();
+      if (demoPlaying) {
+        audioCtx.suspend();
+        demoPlaying = false;
+        showToast("데모 사운드 정지");
+        return;
+      }
+
+      demoPlaying = true;
+      showToast("🎶 묵직한 서브우퍼 킥 재생 중...");
+
+      function playKick() {
+        if (!demoPlaying) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(analyser);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        osc.frequency.setValueAtTime(150, now);
+        osc.frequency.exponentialRampToValueAtTime(28, now + 0.38);
+
+        gain.gain.setValueAtTime(0.9, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+        osc.start(now);
+        osc.stop(now + 0.42);
+
+        setTimeout(playKick, 580);
+      }
+      playKick();
+    });
+
+    // 전체화면 토글
+    document.getElementById('btn-fullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => alert(err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // 파티클 & 충격파 데이터
+    const particles = [];
+    for (let i = 0; i < 90; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        size: Math.random() * 2.5 + 1,
+        speedX: (Math.random() - 0.5) * 0.7,
+        speedY: (Math.random() - 0.5) * 0.7,
+        alpha: Math.random() * 0.6 + 0.2
+      });
+    }
+
+    const shockwaves = [];
+    let prevBass = 0;
+    let bassSmooth = 0;
+    let midSmooth = 0;
+    let trebleSmooth = 0;
+
+    // ==========================================
+    // 메인 렌더 루프
+    // ==========================================
+    function render(time) {
+      requestAnimationFrame(render);
+
+      let bass = 0, mid = 0, treble = 0;
+      if (analyser && dataArray) {
+        analyser.getByteFrequencyData(dataArray);
+
+        let bassSum = 0;
+        for (let i = 0; i < 8; i++) bassSum += dataArray[i];
+        bass = (bassSum / 8 / 255) * sensitivity;
+
+        let midSum = 0;
+        for (let i = 8; i < 60; i++) midSum += dataArray[i];
+        mid = (midSum / 52 / 255) * sensitivity;
+
+        let trebleSum = 0;
+        for (let i = 60; i < 180; i++) trebleSum += dataArray[i];
+        treble = (trebleSum / 120 / 255) * sensitivity;
+      }
+
+      bassSmooth += (bass - bassSmooth) * 0.25;
+      midSmooth += (mid - midSmooth) * 0.2;
+      trebleSmooth += (treble - trebleSmooth) * 0.16;
+
+      // 킥 비트 감지 시 충격파 생성
+      if (bassSmooth > 0.42 && bassSmooth - prevBass > 0.14) {
+        shockwaves.push({ r: 90, opacity: 0.9, width: 4.5 });
+      }
+      prevBass = bassSmooth;
+
+      // 쿠폰 카드가 음악의 베이스 비트에 반응하여 미세하게 펌핑 모션
+      if (couponCard) {
+        const cardScale = 1 + (bassSmooth * 0.038);
+        couponCard.style.transform = `scale(${cardScale})`;
+      }
+
+      const cx = width / 2;
+      const cy = height / 2;
+
+      // 앰비언트 배경
+      const bgGrad = ctx.createRadialGradient(cx, cy, 60, cx, cy, Math.max(width, height) * 0.75);
+      bgGrad.addColorStop(0, '#151821');
+      bgGrad.addColorStop(0.5, '#0b0d13');
+      bgGrad.addColorStop(1, '#040507');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // 1. 네온 리본 웨이브 라인
+      const ribbonCount = 4;
+      const ribbonColors = [
+        'rgba(255, 75, 0, 0.45)',
+        'rgba(255, 0, 130, 0.35)',
+        'rgba(0, 220, 255, 0.35)',
+        'rgba(140, 0, 255, 0.3)'
+      ];
+
+      for (let r = 0; r < ribbonCount; r++) {
+        ctx.save();
+        ctx.beginPath();
+        const offsetPhase = (time * 0.0018) + (r * 0.9);
+        const amp = (65 + r * 22) * (1 + bassSmooth * 0.85);
+
+        ctx.moveTo(0, cy);
+        for (let x = 0; x <= width; x += 15) {
+          const normX = x / width;
+          const wave = Math.sin(normX * 6 + offsetPhase) * Math.cos(normX * 3 + offsetPhase * 0.5);
+          const y = cy + wave * amp + Math.sin(x * 0.01 + offsetPhase) * 22;
+          ctx.lineTo(x, y);
+        }
+
+        ctx.strokeStyle = ribbonColors[r];
+        ctx.lineWidth = 3 + bassSmooth * 2.5;
+        ctx.shadowColor = ribbonColors[r];
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 2. 대형 서브우퍼 콘 바운스 (움직임 강화)
+      const baseR = Math.min(width, height) * 0.23;
+      const pulseMultiplier = 1 + (bassSmooth * 0.36);
+      const currentR = baseR * pulseMultiplier;
+
+      ctx.save();
+      const rimGrad = ctx.createLinearGradient(cx - currentR, cy - currentR, cx + currentR, cy + currentR);
+      rimGrad.addColorStop(0, '#5a6170');
+      rimGrad.addColorStop(0.5, '#1e2129');
+      rimGrad.addColorStop(1, '#6b7382');
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR * 1.38, 0, Math.PI * 2);
+      ctx.fillStyle = rimGrad;
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+      ctx.shadowBlur = 40;
+      ctx.fill();
+
+      // 고무 서라운드 롤 엣지
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR * 1.24, 0, Math.PI * 2);
+      ctx.fillStyle = '#0f1116';
+      ctx.lineWidth = 18 * pulseMultiplier;
+      ctx.strokeStyle = '#272b35';
+      ctx.stroke();
+      ctx.fill();
+
+      // 진동 콘 본체
+      const coneGrad = ctx.createRadialGradient(cx, cy, 25, cx, cy, currentR);
+      coneGrad.addColorStop(0, '#191d26');
+      coneGrad.addColorStop(0.7, '#212633');
+      coneGrad.addColorStop(1, '#0e1117');
+
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR, 0, Math.PI * 2);
+      ctx.fillStyle = coneGrad;
+      ctx.fill();
+
+      // 립 텍스처
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+      ctx.lineWidth = 1.8;
+      for (let ring = 0.35; ring < 0.95; ring += 0.14) {
+        ctx.beginPath();
+        ctx.arc(cx, cy, currentR * ring, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // 우퍼 센터 돔 후광
+      const centerGlow = ctx.createRadialGradient(cx, cy, 10, cx, cy, currentR * 0.65);
+      centerGlow.addColorStop(0, `rgba(255, 75, 0, ${0.15 + bassSmooth * 0.25})`);
+      centerGlow.addColorStop(1, 'rgba(255, 75, 0, 0)');
+      ctx.fillStyle = centerGlow;
+      ctx.beginPath();
+      ctx.arc(cx, cy, currentR * 0.65, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 3. 충격파 링
+      for (let i = shockwaves.length - 1; i >= 0; i--) {
+        const sw = shockwaves[i];
+        sw.r += 7.5;
+        sw.opacity -= 0.016;
+
+        if (sw.opacity <= 0) {
+          shockwaves.splice(i, 1);
+          continue;
+        }
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, sw.r, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255, 75, 0, ${sw.opacity})`;
+        ctx.lineWidth = sw.width;
+        ctx.shadowColor = '#ff4500';
+        ctx.shadowBlur = 18;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 4. 수직 이퀄라이저 바
+      if (dataArray) {
+        const barCount = 42;
+        const barWidth = 4.5;
+        const spread = width * 0.40;
+
+        for (let i = 0; i < barCount; i++) {
+          const freqVal = dataArray[i * 2] / 255;
+          const barHeight = freqVal * 125 * (1 + bassSmooth * 0.45);
+          const xOffset = (i / barCount) * spread + baseR * 1.45;
+
+          [-1, 1].forEach(dir => {
+            const bx = cx + (xOffset * dir);
+            const by = cy;
+
+            const barGrad = ctx.createLinearGradient(bx, by - barHeight, bx, by + barHeight);
+            barGrad.addColorStop(0, '#ff7700');
+            barGrad.addColorStop(0.5, '#ff4500');
+            barGrad.addColorStop(1, 'rgba(255, 69, 0, 0)');
+
+            ctx.fillStyle = barGrad;
+            ctx.fillRect(bx - barWidth / 2, by - barHeight, barWidth, barHeight * 2);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ff4500';
+            ctx.shadowBlur = 8;
+            ctx.fillRect(bx - barWidth / 2, by - barHeight - 2, barWidth, 3);
+          });
+        }
+      }
+
+      // 5. 타이포그래피 (상단 CORDELIA + 중앙 메인 대형 JBL PREMIUM SOUND ZONE)
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      const textScale = 1 + (bassSmooth * 0.07);
+
+      // (1) 상단 CORDELIA 라벨
+      ctx.save();
+      ctx.translate(cx, cy - 36);
+      ctx.scale(textScale, textScale);
+
+      ctx.font = '700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.letterSpacing = '10px';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 8;
+      ctx.fillText('CORDELIA', 5, 0);
+      ctx.restore();
+
+      // (2) 중앙 메인: JBL PREMIUM SOUND ZONE
+      ctx.save();
+      ctx.translate(cx, cy + 10);
+      ctx.scale(textScale, textScale);
+
+      ctx.font = '900 42px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.letterSpacing = '8px';
+
+      const textGrad = ctx.createLinearGradient(cx - 300, 0, cx + 300, 0);
+      textGrad.addColorStop(0, '#ffffff');
+      textGrad.addColorStop(0.35, '#ff5500');
+      textGrad.addColorStop(1, '#ffffff');
+      ctx.fillStyle = textGrad;
+
+      ctx.shadowColor = 'rgba(255, 69, 0, 0.85)';
+      ctx.shadowBlur = 28 + bassSmooth * 22;
+      ctx.fillText('JBL PREMIUM SOUND ZONE', 4, 0);
+      ctx.restore();
+
+      // (3) 하단 슬릭 데코 라인
+      ctx.save();
+      ctx.translate(cx, cy + 56);
+      ctx.scale(textScale, textScale);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(-180, 0);
+      ctx.lineTo(-80, 0);
+      ctx.moveTo(80, 0);
+      ctx.lineTo(180, 0);
+      ctx.stroke();
+
+      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+      ctx.letterSpacing = '5px';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+      ctx.shadowBlur = 6;
+      ctx.fillText('HIGH DEFINITION ACOUSTICS', 2.5, 0);
+      ctx.restore();
+
+      ctx.restore();
+
+      // 6. 앰비언트 부유 파티클
+      ctx.save();
+      for (const p of particles) {
+        p.x += p.speedX * (1 + trebleSmooth * 2);
+        p.y += p.speedY * (1 + trebleSmooth * 2);
+
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * (0.6 + trebleSmooth * 0.8)})`;
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    requestAnimationFrame(render);
+  </script>
 </body>
 </html>
