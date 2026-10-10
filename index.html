@@ -1,879 +1,718 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CORDELIA x JBL PREMIUM SOUND ZONE</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-    }
-    body, html {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background-color: #06070a;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신한카드 X 디앤테크 무인 QR결제 시스템 구축 사업 제안서</title>
+    <style>
+        :root {
+            --primary-color: #0046FF;
+            --secondary-color: #002288;
+            --accent-color: #FF6B00;
+            --bg-dark: #0A0E17;
+            --bg-card: #161F30;
+            --text-main: #F0F4F8;
+            --text-sub: #A0AEC0;
+            --border-color: #2D3748;
+        }
 
-    #canvas-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-    /* ====================================================
-       1. 상단 영업 시간 디스플레이 바 (한글 / 영어)
-       ==================================================== */
-    .business-hours-badge {
-      position: absolute;
-      top: 26px;
-      left: 36px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: rgba(14, 18, 26, 0.78);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 10px 22px;
-      border-radius: 30px;
-      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
-      z-index: 20;
-      animation: fadeInDown 1s ease-out;
-    }
+        /* 로그인 모달 스타일 */
+        #login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
 
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #00ff88;
-      box-shadow: 0 0 12px #00ff88;
-      animation: pulseGreen 2s infinite ease-in-out;
-    }
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            border-radius: 16px;
+            width: 480px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            text-align: center;
+        }
 
-    .hours-text {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+        .login-header {
+            margin-bottom: 24px;
+        }
 
-    .hours-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: rgba(255, 255, 255, 0.6);
-      text-transform: uppercase;
-    }
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
 
-    .hours-val {
-      font-size: 17px;
-      font-weight: 800;
-      letter-spacing: 1.5px;
-      color: #ffffff;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-    }
+        .brand-tag {
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-    .hours-sub {
-      font-size: 11px;
-      font-weight: 500;
-      color: #ff9955;
-    }
+        .confidentiality-notice {
+            background: rgba(255, 107, 0, 0.1);
+            border-left: 4px solid var(--accent-color);
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            color: #E2E8F0;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
 
-    /* ====================================================
-       2. 생맥주 웰컴 쿠폰 이벤트 모션 배너 (하단 우측 플로팅)
-       ==================================================== */
-    .event-banner-card {
-      position: absolute;
-      bottom: 26px;
-      right: 36px;
-      width: 440px;
-      background: linear-gradient(135deg, rgba(38, 48, 28, 0.90) 0%, rgba(18, 24, 15, 0.92) 100%);
-      border: 1.5px solid rgba(160, 205, 95, 0.4);
-      border-radius: 20px;
-      backdrop-filter: blur(16px);
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65), 0 0 25px rgba(110, 160, 50, 0.2);
-      padding: 16px 20px;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: transform 0.15s ease-out;
-      transform-origin: bottom right;
-    }
+        .login-input {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #0D131F;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 16px;
+            outline: none;
+            text-align: center;
+            letter-spacing: 4px;
+        }
 
-    /* 쿠폰 헤더 */
-    .eb-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      padding-bottom: 8px;
-    }
+        .login-input:focus {
+            border-color: var(--primary-color);
+        }
 
-    .eb-brand {
-      display: flex;
-      align-items: baseline;
-      gap: 6px;
-    }
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            border: none;
+            background: var(--primary-color);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
-    .eb-hotel {
-      font-size: 11px;
-      font-weight: 800;
-      color: #c9e88d;
-      letter-spacing: 1px;
-    }
+        .login-btn:hover {
+            background: #0038CC;
+        }
 
-    .eb-title {
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: 0.5px;
-      color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
-    }
+        .error-msg {
+            color: #FF4D4D;
+            font-size: 13px;
+            margin-top: 10px;
+            display: none;
+        }
 
-    .eb-takeout-tag {
-      background: #ff7700;
-      color: #fff;
-      font-size: 10px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 119, 0, 0.4);
-      animation: pulseBadge 2.2s infinite;
-    }
+        /* 프레젠테이션 메인 프레임 */
+        #app-container {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            flex-direction: column;
+        }
 
-    /* 쿠폰 비주얼 콘텐츠 */
-    .eb-body {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
+        header {
+            height: 60px;
+            background: rgba(22, 31, 48, 0.8);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
 
-    .eb-items-visual {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+        .logo-area {
+            font-size: 18px;
+            font-weight: 800;
+        }
 
-    .beer-icon-wrap {
-      position: relative;
-      font-size: 32px;
-      filter: drop-shadow(0 4px 10px rgba(255, 180, 0, 0.4));
-      animation: floatBeer 2.4s ease-in-out infinite alternate;
-    }
+        .pc-notice {
+            background: #1E293B;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #94A3B8;
+            border: 1px solid #334155;
+        }
 
-    .nacho-icon-wrap {
-      font-size: 30px;
-      filter: drop-shadow(0 4px 10px rgba(255, 160, 0, 0.35));
-      animation: floatNacho 2.8s ease-in-out infinite alternate;
-    }
+        /* Slide Viewport */
+        .slide-viewport {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 
-    .plus-sign {
-      color: rgba(255, 255, 255, 0.6);
-      font-weight: 900;
-      font-size: 16px;
-    }
+        .slide {
+            display: none;
+            width: 1280px;
+            height: 720px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            padding: 48px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: absolute;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-    .eb-info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-    }
+        .slide.active {
+            display: flex;
+        }
 
-    .eb-desc-kr {
-      font-size: 13px;
-      font-weight: 800;
-      color: #ffffff;
-      text-align: right;
-    }
+        /* Slide Components */
+        .slide-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
 
-    .eb-desc-en {
-      font-size: 10.5px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.65);
-      text-align: right;
-    }
+        .slide-subtitle {
+            font-size: 14px;
+            color: var(--primary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 4px;
+        }
 
-    .eb-price {
-      font-size: 26px;
-      font-weight: 900;
-      color: #ffdc33;
-      text-shadow: 0 0 14px rgba(255, 220, 50, 0.5);
-      margin-top: 2px;
-    }
+        .slide-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFF;
+        }
 
-    .eb-footer {
-      border-top: 1px dashed rgba(255, 255, 255, 0.12);
-      padding-top: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 10.5px;
-      color: rgba(255, 255, 255, 0.7);
-    }
+        .slide-body {
+            flex: 1;
+            display: flex;
+            gap: 24px;
+        }
 
-    .eb-location {
-      color: #d8f59d;
-      font-weight: 700;
-    }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            width: 100%;
+        }
 
-    /* ====================================================
-       3. 하단 컨트롤 툴바 (3.5초 미사용 시 숨김)
-       ==================================================== */
-    .controls {
-      position: absolute;
-      bottom: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: rgba(14, 17, 24, 0.88);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      padding: 10px 20px;
-      border-radius: 40px;
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-      z-index: 100;
-    }
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
 
-    .controls.hidden {
-      opacity: 0;
-      transform: translateX(-50%) translateY(35px);
-      pointer-events: none;
-    }
+        .card {
+            background: #0F172A;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .btn {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
+        .card-header {
+            font-size: 18px;
+            font-weight: 700;
+            color: #60A5FA;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-    .btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.35);
-      transform: translateY(-1px);
-    }
+        .card-body {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
 
-    .btn.primary {
-      background: #ff4500;
-      border-color: #ff6a33;
-      box-shadow: 0 0 18px rgba(255, 69, 0, 0.5);
-    }
+        .card-body ul {
+            list-style: none;
+        }
 
-    .btn.primary:hover {
-      background: #e63e00;
-    }
+        .card-body li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 16px;
+        }
 
-    .slider-group {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #ccc;
-      font-size: 12px;
-      padding: 0 6px;
-    }
+        .card-body li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
 
-    input[type="range"] {
-      -webkit-appearance: none;
-      width: 80px;
-      height: 4px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.25);
-      outline: none;
-    }
+        .highlight-box {
+            background: rgba(0, 70, 255, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
 
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #ff4500;
-      cursor: pointer;
-    }
+        .highlight-title {
+            color: #93C5FD;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
 
-    #status-toast {
-      position: absolute;
-      top: 28px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10, 12, 18, 0.88);
-      color: #eee;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 9px 24px;
-      border-radius: 22px;
-      font-size: 13px;
-      backdrop-filter: blur(10px);
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      z-index: 120;
-    }
+        /* Slide Footer Controls */
+        footer {
+            height: 60px;
+            background: rgba(22, 31, 48, 0.8);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
 
-    #status-toast.show {
-      opacity: 1;
-    }
+        .nav-btn {
+            background: #1E293B;
+            border: 1px solid #334155;
+            color: #FFF;
+            padding: 8px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
 
-    /* 애니메이션 */
-    @keyframes pulseGreen {
-      0%, 100% { transform: scale(1); opacity: 0.9; }
-      50% { transform: scale(1.35); opacity: 1; box-shadow: 0 0 16px #00ff88; }
-    }
-    @keyframes pulseBadge {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06); filter: brightness(1.15); }
-    }
-    @keyframes floatBeer {
-      0% { transform: translateY(0) rotate(-2deg); }
-      100% { transform: translateY(-7px) rotate(4deg); }
-    }
-    @keyframes floatNacho {
-      0% { transform: translateY(0) rotate(3deg); }
-      100% { transform: translateY(-6px) rotate(-4deg); }
-    }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+        .nav-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .page-indicator {
+            font-size: 14px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        /* 타이틀 슬라이드 */
+        .title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, #0A0E17 0%, #162447 100%);
+        }
+
+        .title-slide h1 {
+            font-size: 42px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(to right, #FFF, #93C5FD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-slide h3 {
+            font-size: 20px;
+            color: var(--primary-color);
+            margin-bottom: 32px;
+            font-weight: 600;
+        }
+
+        .title-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            color: var(--text-sub);
+            border-top: 1px solid var(--border-color);
+            padding-top: 24px;
+        }
+
+        .step-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .step-item {
+            background: #0F172A;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            width: 18%;
+            text-align: center;
+        }
+
+        .step-num {
+            background: var(--primary-color);
+            color: #FFF;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px auto;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .step-arrow {
+            color: var(--primary-color);
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- 메인 캔버스 -->
-  <div id="canvas-container">
-    <canvas id="visualizer"></canvas>
-  </div>
+    <!-- 비밀번호 로그인 모달 -->
+    <div id="login-modal">
+        <div class="login-box">
+            <div class="login-header">
+                <div class="login-title"><span class="brand-tag">신한카드 X 디앤테크</span></div>
+                <div style="font-size: 16px; color: #94A3B8;">무인 QR결제 시스템 구축 사업 제안서</div>
+            </div>
+            
+            <div class="confidentiality-notice">
+                <strong>비밀유지 서약 (Confidentiality Notice)</strong><br>
+                본 제안서의 모든 내용(기술 구조, 제휴 조건, 시장 데이터 및 비즈니스 모델)은 신한카드 및 디앤테크의 영업비밀에 해당합니다. 무단 전재, 복사, 외부 유출을 엄격히 금합니다.
+            </div>
 
-  <!-- 1. 매장 영업 시간 (상단 좌측) -->
-  <div class="business-hours-badge">
-    <div class="status-dot"></div>
-    <div class="hours-text">
-      <div class="hours-title">OPEN 15:00 ~ 24:00</div>
-      <div class="hours-val">매장 영업시간 15:00 - 24:00</div>
-      <div class="hours-sub">Business Hours : 3:00 PM – 12:00 AM</div>
-    </div>
-  </div>
-
-  <!-- 2. 생맥주 웰컴 쿠폰 이벤트 모션 배너 (하단 우측) -->
-  <div class="event-banner-card" id="eventCard">
-    <div class="eb-header">
-      <div class="eb-brand">
-        <span class="eb-hotel">CORDELIA</span>
-        <span class="eb-title">Welcome Beer Coupon</span>
-      </div>
-      <span class="eb-takeout-tag">포장가능 TAKE OUT</span>
-    </div>
-    <div class="eb-body">
-      <div class="eb-items-visual">
-        <div class="beer-icon-wrap" title="TERRA Draft Beer">🍺</div>
-        <span class="plus-sign">+</span>
-        <div class="beer-icon-wrap" style="animation-delay: -1.2s;">🍺</div>
-        <span class="plus-sign">+</span>
-        <div class="nacho-icon-wrap" title="Crispy Nachos">🧀</div>
-      </div>
-      <div class="eb-info">
-        <div class="eb-desc-kr">테라 생맥주 2잔 + 바삭 나초 세트</div>
-        <div class="eb-desc-en">2 Draft Beers + Crispy Nacho Set</div>
-        <div class="eb-price">₩ 10,000</div>
-      </div>
-    </div>
-    <div class="eb-footer">
-      <span class="eb-location">📍 코델리아호텔 1층 | 카페 & 펍 코델리아</span>
-      <span>1st Floor / Cafe & Pub Cordelia</span>
-    </div>
-  </div>
-
-  <!-- 안내 토스트 메시지 -->
-  <div id="status-toast"></div>
-
-  <!-- 3. 컨트롤 툴바 -->
-  <div class="controls" id="controls">
-    <button class="btn primary" id="btn-system-audio" title="윈도우 노트북 소리 연동">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 6h16v10H4V6z"/></svg>
-      시스템 오디오 연동
-    </button>
-    <button class="btn" id="btn-mic">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
-      마이크 연동
-    </button>
-    <button class="btn" id="btn-demo">데모 비트</button>
-
-    <div class="slider-group">
-      <span>감도</span>
-      <input type="range" id="sensitivity" min="0.5" max="4.0" step="0.1" value="2.2">
+            <input type="password" id="password-input" class="login-input" placeholder="비밀번호 입력" maxlength="4">
+            <button class="login-btn" onclick="checkPassword()">보안 접속</button>
+            <div id="error-msg" class="error-msg">비밀번호가 올바르지 않습니다. 다시 시도해주세요.</div>
+        </div>
     </div>
 
-    <button class="btn" id="btn-fullscreen">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-      전체화면
-    </button>
-  </div>
+    <!-- 프레젠테이션 메인 컨테이너 -->
+    <div id="app-container">
+        <header>
+            <div class="logo-area">
+                <span style="color: #0046FF;">Shinhan Card</span> <span style="color: #FFF;">X</span> <span style="color: #FF6B00;">D&TECH</span>
+            </div>
+            <div class="pc-notice">
+                본 프레젠테이션은 PC 화면(1920x1080 / 16:9) 환경에 최적화되어 있습니다.
+            </div>
+        </header>
 
-  <script>
-    const canvas = document.getElementById('visualizer');
-    const ctx = canvas.getContext('2d');
-    const controls = document.getElementById('controls');
-    const toast = document.getElementById('status-toast');
-    const eventCard = document.getElementById('eventCard');
+        <div class="slide-viewport">
+            
+            <!-- Slide 1: 표지 -->
+            <div class="slide title-slide active">
+                <div>
+                    <h3>신한카드 X 디앤테크 전략적 제안</h3>
+                    <h1>차세대 무인 QR결제 인프라 구축 및<br>제주·전국 무인 시장 마케팅 제안서</h1>
+                    <p style="color: #94A3B8; margin-bottom: 40px;">자판기, 가챠숍, 아케이드 오락기계 무인 QR결제 솔루션 및 신한 SOL페이 락인(Lock-in) 전략</p>
+                </div>
+                <div class="title-meta">
+                    <div><strong>발행처:</strong> 신한카드 X 주식회사 디앤테크</div>
+                    <div><strong>일자:</strong> 2026년 10월</div>
+                    <div><strong>보안등급:</strong> 대외비 (Confidential)</div>
+                </div>
+            </div>
 
-    let width, height;
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
+            <!-- Slide 2: 제휴 개요 및 핵심 혜택 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">PARTNER OVERVIEW</div>
+                    <div class="slide-title">1. 신한카드 X 디앤테크 핵심 제휴 구조</div>
+                </div>
+                <div class="slide-body">
+                    <div class="grid-3">
+                        <div class="card">
+                            <div class="card-header">신한카드 (SOL페이)</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>단말기 설치 지원:</strong> 자판기/오락기 1대당 8만 원 상당 디앤테크 QR단말 지원</li>
+                                    <li><strong>SOL페이 결제 혜택:</strong> SOL페이 결제 고객 대상 10% 즉시 할인 혜택 타겟 마케팅</li>
+                                    <li><strong>앱 푸시 및 홍보:</strong> SOL페이 위치 기반 자판기 지도 표시 및 홍보 알림 지원</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">디앤테크 (D&TECH)</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>QR 결제 솔루션:</strong> 자판기/오락기 연동 하드웨어 및 서버 API 개발 제공</li>
+                                    <li><strong>원격 제어 시스템:</strong> 신한 SOL페이 결제 승인 시 투출구/게임 구동 실시간 통신</li>
+                                    <li><strong>과다사용 방지:</strong> FDS(이상거래탐지) 연동 및 사행성 대응 시스템 탑재</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">자판기/매장 운영업체</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>초기 구축비 절감:</strong> 단말기 지원금으로 단말기 도입 비용 부담 최소화</li>
+                                    <li><strong>집객 유도:</strong> 10% 할인 프로모션 및 위치 홍보로 신규 고객 유입 증대</li>
+                                    <li><strong>운영 효율화:</strong> 현금 관리 부담 해소 및 24시간 무인 매출 증대 효과</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function showToast(msg, duration = 3000) {
-      toast.innerText = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), duration);
-    }
+            <!-- Slide 3: 시장 규모 및 제주도 현황 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">MARKET ANALYSIS</div>
+                    <div class="slide-title">2. 제주도 및 전국 타겟 시장 규모 분석</div>
+                </div>
+                <div class="slide-body">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">제주도 내 타겟 무인 기기 시장</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>일반 자판기:</strong> 관광지, 올레길, 숙박시설, 버스정류장 등 약 3,500대 분포</li>
+                                    <li><strong>가챠숍 & 퍼니박스:</strong> 제주시/서귀포시 번화가 및 무인 매장 약 450대 이상</li>
+                                    <li><strong>아케이드 & 오락기계:</strong> 호텔 리조트 내 오락실, 인형뽑기방 약 800대</li>
+                                    <li><strong>특수 분석:</strong> 인력난 및 관광객 유입 대응을 위해 무인 결제 단말 수요 급증 중</li>
+                                </ul>
+                                <div class="highlight-box">
+                                    <div class="highlight-title">제주도 타겟 도합 수량</div>
+                                    <div style="font-size: 20px; font-weight: 800; color: #FFF;">약 4,750대 + 알파</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">전국 자판기 및 무인 시장 확장성</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>전국 음료/스낵 자판기:</strong> 약 30만 대 규모 (카드/QR 전환율 지속 증가)</li>
+                                    <li><strong>무인 캡슐토이/퍼니박스:</strong> 약 4만 대 (MZ세대 및 펀슈머 트렌드 중심)</li>
+                                    <li><strong>무인 아케이드/뽑기 기계:</strong> 전국 약 7만 대 분포</li>
+                                    <li><strong>전환 목표:</strong> 1차 제주 시범사업 후 전국 10,000대 지원망 확장 계획</li>
+                                </ul>
+                                <div class="highlight-box">
+                                    <div class="highlight-title">신한 SOL페이 락인 효과</div>
+                                    <div style="color: #E2E8F0; font-size: 13px;">소액 결치가 빈번한 무인 기기에 SOL페이를 기본 결제 수단으로 고정</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    // 마우스 미동작 시 하단 툴바만 부드럽게 숨김 (이벤트 카드/영업시간은 유지)
-    let idleTimer = null;
-    function resetIdleTimer() {
-      controls.classList.remove('hidden');
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => {
-        controls.classList.add('hidden');
-      }, 3500);
-    }
-    window.addEventListener('mousemove', resetIdleTimer);
-    resetIdleTimer();
+            <!-- Slide 4: 시스템 구조 및 결제 프로세스 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">SYSTEM ARCHITECTURE</div>
+                    <div class="slide-title">3. 무인 QR결제 시스템 설치 및 통신 구조</div>
+                </div>
+                <div class="slide-body" style="flex-direction: column;">
+                    <p style="color: var(--text-sub); margin-bottom: 12px;">고객 스마트폰 스캔부터 자판기/오락기 투출까지 1.5초 이내 실시간 신호 연동 흐름도</p>
+                    <div class="step-flow">
+                        <div class="step-item">
+                            <div class="step-num">1</div>
+                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">QR 스캔</div>
+                            <div style="font-size: 12px; color: #94A3B8;">자판기 전면 부착 QR을 신한 SOL페이로 스캔</div>
+                        </div>
+                        <div class="step-arrow">➔</div>
+                        <div class="step-item">
+                            <div class="step-num">2</div>
+                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">10% 할인 결제</div>
+                            <div style="font-size: 12px; color: #94A3B8;">SOL페이 승인 (신한카드 PG/서버 통신)</div>
+                        </div>
+                        <div class="step-arrow">➔</div>
+                        <div class="step-item">
+                            <div class="step-num">3</div>
+                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 서버</div>
+                            <div style="font-size: 12px; color: #94A3B8;">결제 성공 신호 수신 및 자판기 ID 검증</div>
+                        </div>
+                        <div class="step-arrow">➔</div>
+                        <div class="step-item">
+                            <div class="step-num">4</div>
+                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 단말기</div>
+                            <div style="font-size: 12px; color: #94A3B8;">LTE/Wi-Fi 모듈을 통해 기기 메인보드 제어</div>
+                        </div>
+                        <div class="step-arrow">➔</div>
+                        <div class="step-item">
+                            <div class="step-num">5</div>
+                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">상품 투출 / 구동</div>
+                            <div style="font-size: 12px; color: #94A3B8;">투출구 개방 또는 게임 크레딧 지급</div>
+                        </div>
+                    </div>
 
-    // ==========================================
-    // 오디오 분석 엔진
-    // ==========================================
-    let audioCtx = null;
-    let analyser = null;
-    let dataArray = null;
-    let sensitivity = 2.2;
+                    <div class="grid-2" style="margin-top: 24px;">
+                        <div class="card">
+                            <div class="card-header">디앤테크 릴레이/API 단말 장점</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>기존 자판기 메인보드 손상 없이 10분 내 간편 장착 가능</li>
+                                    <li>퍼니박스, 캡슐토이, 일반 음료 자판기 전 기종 규격 호환</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">신한 SOL페이 위치 기반 홍보 연동</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li>SOL페이 내 "My 자판기/가챠 Map"을 통해 인근 설치 장소 노출</li>
+                                    <li>관광지 주변 접근 시 "SOL페이 10% 할인 자판기" PUSH 알림 발송</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    document.getElementById('sensitivity').addEventListener('input', (e) => {
-      sensitivity = parseFloat(e.target.value);
-    });
+            <!-- Slide 5: 과다사용 및 사행성 논란 대응 방안 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">COMPLIANCE & ESG</div>
+                    <div class="slide-title">4. 사행성 논란 방지 및 소비자 보호 방안</div>
+                </div>
+                <div class="slide-body">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header" style="color: #FF6B00;">예상 규제 및 사회적 이슈</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>과다사용 유도:</strong> 간편 QR 결제로 인한 청소년 및 이용자의 무분별한 연속 결제</li>
+                                    <li><strong>사행성 조장:</strong> 가챠/퍼니박스/인형뽑기 등의 확률형 구조에 대한 소비자 불만</li>
+                                    <li><strong>법적 리스크:</strong> 게임산업진흥법(경품 가액 제한), 전자상거래법(확률 미공시) 이슈</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" style="color: #10B981;">신한카드 X 디앤테크 안심 솔루션</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>1일/1인 결제 한도 제한 (FDS):</strong> 동일 계정 기준 하루 최대 5회 또는 3만 원 초과 시 자동 결제 차단 시스템 탑재</li>
+                                    <li><strong>확률 및 상품 정보 QR 명시:</strong> QR 스캔 시 결제 전 상품 구성 및 확률 정보 투명 공개 화면 제공</li>
+                                    <li><strong>청소년 보호 시간 차단:</strong> 야간 시간(22:00~09:00) 청소년 카드/계정의 아케이드 기기 결제 제어</li>
+                                    <li><strong>경품 가액 법적 준수:</strong> 게임법 가이드라인(만원 이하) 준수 매장만 제휴 지원 대상 선정</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    function setupAudioContext() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 1024;
-        analyser.smoothingTimeConstant = 0.78;
-        dataArray = new Uint8Array(analyser.frequencyBinCount);
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-    }
+            <!-- Slide 6: 시범 사업 추진 및 향후 일정 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">ROADMAP & PILOT TEST</div>
+                    <div class="slide-title">5. 1차 시범 사업 추진 계획 및 로드맵</div>
+                </div>
+                <div class="slide-body">
+                    <div class="grid-2">
+                        <div class="card">
+                            <div class="card-header">1차 시범 사업 (11월 제주 300대)</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>설치 규모:</strong> 11월 중 제주 주요 거점 지역 내 300대 시범 설치</li>
+                                    <li><strong>판매 데이터 수집:</strong> SOL페이 결제 비중, 시간대별/상품별 매출 데이터 축적</li>
+                                    <li><strong>개선사항 모니터링:</strong> 현장 결제 통신 성공률 및 이용자 C/S 반응 집중 체크</li>
+                                    <li><strong>효과 검증:</strong> 10% 할인 프로모션에 따른 유입 상승률 및 락인 효과 분석</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">단계별 추진 일정</div>
+                            <div class="card-body">
+                                <ul>
+                                    <li><strong>2026년 10월:</strong> 제휴 협약 체결 및 API 연동 / FDS 사행성 제어 모듈 세팅</li>
+                                    <li><strong>2026년 11월:</strong> 제주 내 300대 1차 시범 설치 및 판매 데이터 모니터링 개시</li>
+                                    <li><strong>2026년 12월:</strong> 시범 사업 분석 결과를 반영한 시스템 보완 및 전국 확대 개시</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-    // 시스템 오디오 연동 (윈도우 소리 캡처)
-    document.getElementById('btn-system-audio').addEventListener('click', async () => {
-      try {
-        setupAudioContext();
-        showToast("공유 창에서 [전체 화면] 선택 후 좌측 하단 '시스템 오디오 공유'를 꼭 체크해주세요!");
+        </div>
 
-        const stream = await navigator.mediaDevices.getDisplayMedia({
-          video: true,
-          audio: {
-            echoCancellation: false,
-            noiseSuppression: false,
-            autoGainControl: false
-          }
+        <footer>
+            <button class="nav-btn" onclick="prevSlide()">◀ 이전 Slide</button>
+            <div class="page-indicator"><span id="current-slide">1</span> / <span id="total-slides">6</span></div>
+            <button class="nav-btn" onclick="nextSlide()">다음 Slide ▶</button>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        document.getElementById('total-slides').innerText = totalSlides;
+
+        function checkPassword() {
+            const pwd = document.getElementById('password-input').value;
+            if(pwd === '0220') {
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('app-container').style.display = 'flex';
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        }
+
+        document.getElementById('password-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
         });
 
-        const audioTracks = stream.getAudioTracks();
-        if (audioTracks.length === 0) {
-          showToast("⚠️ '오디오 공유'가 체크되지 않았습니다. 다시 시도해주세요.");
-          return;
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if(i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            document.getElementById('current-slide').innerText = index + 1;
         }
 
-        const source = audioCtx.createMediaStreamSource(stream);
-        source.connect(analyser);
-        showToast("🎵 시스템 사운드 연동 완료!");
-      } catch (err) {
-        console.error(err);
-        showToast("연동 취소됨 또는 권한 오류");
-      }
-    });
-
-    // 마이크 연동
-    document.getElementById('btn-mic').addEventListener('click', async () => {
-      try {
-        setupAudioContext();
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        const source = audioCtx.createMediaStreamSource(stream);
-        source.connect(analyser);
-        showToast("🎤 마이크 오디오 연동 완료");
-      } catch (err) {
-        console.error(err);
-        showToast("마이크 권한을 허용해주세요.");
-      }
-    });
-
-    // 데모 비트
-    let demoPlaying = false;
-    document.getElementById('btn-demo').addEventListener('click', () => {
-      setupAudioContext();
-      if (demoPlaying) {
-        audioCtx.suspend();
-        demoPlaying = false;
-        showToast("데모 사운드 정지");
-        return;
-      }
-
-      demoPlaying = true;
-      showToast("🎶 묵직한 서브우퍼 킥 재생 중...");
-
-      function playKick() {
-        if (!demoPlaying) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain);
-        gain.connect(analyser);
-        gain.connect(audioCtx.destination);
-
-        const now = audioCtx.currentTime;
-        osc.frequency.setValueAtTime(150, now);
-        osc.frequency.exponentialRampToValueAtTime(28, now + 0.38);
-
-        gain.gain.setValueAtTime(0.9, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
-
-        osc.start(now);
-        osc.stop(now + 0.42);
-
-        setTimeout(playKick, 580);
-      }
-      playKick();
-    });
-
-    // 전체화면 토글
-    document.getElementById('btn-fullscreen').addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => alert(err.message));
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    // 비주얼라이저 파티클 & 충격파
-    const particles = [];
-    for (let i = 0; i < 90; i++) {
-      particles.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        size: Math.random() * 2.5 + 1,
-        speedX: (Math.random() - 0.5) * 0.7,
-        speedY: (Math.random() - 0.5) * 0.7,
-        alpha: Math.random() * 0.6 + 0.2
-      });
-    }
-
-    const shockwaves = [];
-    let prevBass = 0;
-    let bassSmooth = 0;
-    let midSmooth = 0;
-    let trebleSmooth = 0;
-
-    // ==========================================
-    // 메인 렌더 루프
-    // ==========================================
-    function render(time) {
-      requestAnimationFrame(render);
-
-      let bass = 0, mid = 0, treble = 0;
-      if (analyser && dataArray) {
-        analyser.getByteFrequencyData(dataArray);
-
-        let bassSum = 0;
-        for (let i = 0; i < 8; i++) bassSum += dataArray[i];
-        bass = (bassSum / 8 / 255) * sensitivity;
-
-        let midSum = 0;
-        for (let i = 8; i < 60; i++) midSum += dataArray[i];
-        mid = (midSum / 52 / 255) * sensitivity;
-
-        let trebleSum = 0;
-        for (let i = 60; i < 180; i++) trebleSum += dataArray[i];
-        treble = (trebleSum / 120 / 255) * sensitivity;
-      }
-
-      bassSmooth += (bass - bassSmooth) * 0.25;
-      midSmooth += (mid - midSmooth) * 0.2;
-      trebleSmooth += (treble - trebleSmooth) * 0.16;
-
-      // 킥 감지 시 충격파 생성
-      if (bassSmooth > 0.42 && bassSmooth - prevBass > 0.14) {
-        shockwaves.push({ r: 90, opacity: 0.9, width: 4.5 });
-      }
-      prevBass = bassSmooth;
-
-      // 생맥주 이벤트 배너 카드도 베이스 비트에 반응하여 살짝 펌핑 모션
-      if (eventCard) {
-        const cardScale = 1 + (bassSmooth * 0.035);
-        eventCard.style.transform = `scale(${cardScale})`;
-      }
-
-      const cx = width / 2;
-      const cy = height / 2;
-
-      // 앰비언트 배경
-      const bgGrad = ctx.createRadialGradient(cx, cy, 60, cx, cy, Math.max(width, height) * 0.75);
-      bgGrad.addColorStop(0, '#151821');
-      bgGrad.addColorStop(0.5, '#0b0d13');
-      bgGrad.addColorStop(1, '#040507');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, width, height);
-
-      // 1. 네온 리본 웨이브 라인
-      const ribbonCount = 4;
-      const ribbonColors = [
-        'rgba(255, 75, 0, 0.45)',
-        'rgba(255, 0, 130, 0.35)',
-        'rgba(0, 220, 255, 0.35)',
-        'rgba(140, 0, 255, 0.3)'
-      ];
-
-      for (let r = 0; r < ribbonCount; r++) {
-        ctx.save();
-        ctx.beginPath();
-        const offsetPhase = (time * 0.0018) + (r * 0.9);
-        const amp = (65 + r * 22) * (1 + bassSmooth * 0.85);
-
-        ctx.moveTo(0, cy);
-        for (let x = 0; x <= width; x += 15) {
-          const normX = x / width;
-          const wave = Math.sin(normX * 6 + offsetPhase) * Math.cos(normX * 3 + offsetPhase * 0.5);
-          const y = cy + wave * amp + Math.sin(x * 0.01 + offsetPhase) * 22;
-          ctx.lineTo(x, y);
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
         }
 
-        ctx.strokeStyle = ribbonColors[r];
-        ctx.lineWidth = 3 + bassSmooth * 2.5;
-        ctx.shadowColor = ribbonColors[r];
-        ctx.shadowBlur = 18;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // 2. 대형 서브우퍼 콘 바운스 (움직임 강화)
-      const baseR = Math.min(width, height) * 0.23;
-      const pulseMultiplier = 1 + (bassSmooth * 0.36);
-      const currentR = baseR * pulseMultiplier;
-
-      ctx.save();
-      const rimGrad = ctx.createLinearGradient(cx - currentR, cy - currentR, cx + currentR, cy + currentR);
-      rimGrad.addColorStop(0, '#5a6170');
-      rimGrad.addColorStop(0.5, '#1e2129');
-      rimGrad.addColorStop(1, '#6b7382');
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR * 1.38, 0, Math.PI * 2);
-      ctx.fillStyle = rimGrad;
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
-      ctx.shadowBlur = 40;
-      ctx.fill();
-
-      // 고무 서라운드 롤 엣지
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR * 1.24, 0, Math.PI * 2);
-      ctx.fillStyle = '#0f1116';
-      ctx.lineWidth = 18 * pulseMultiplier;
-      ctx.strokeStyle = '#272b35';
-      ctx.stroke();
-      ctx.fill();
-
-      // 진동 콘 본체
-      const coneGrad = ctx.createRadialGradient(cx, cy, 25, cx, cy, currentR);
-      coneGrad.addColorStop(0, '#191d26');
-      coneGrad.addColorStop(0.7, '#212633');
-      coneGrad.addColorStop(1, '#0e1117');
-
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR, 0, Math.PI * 2);
-      ctx.fillStyle = coneGrad;
-      ctx.fill();
-
-      // 립 텍스처
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
-      ctx.lineWidth = 1.8;
-      for (let ring = 0.35; ring < 0.95; ring += 0.14) {
-        ctx.beginPath();
-        ctx.arc(cx, cy, currentR * ring, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-
-      // 우퍼 센터 돔 후광
-      const centerGlow = ctx.createRadialGradient(cx, cy, 10, cx, cy, currentR * 0.65);
-      centerGlow.addColorStop(0, `rgba(255, 75, 0, ${0.15 + bassSmooth * 0.25})`);
-      centerGlow.addColorStop(1, 'rgba(255, 75, 0, 0)');
-      ctx.fillStyle = centerGlow;
-      ctx.beginPath();
-      ctx.arc(cx, cy, currentR * 0.65, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
-
-      // 3. 충격파 링
-      for (let i = shockwaves.length - 1; i >= 0; i--) {
-        const sw = shockwaves[i];
-        sw.r += 7.5;
-        sw.opacity -= 0.016;
-
-        if (sw.opacity <= 0) {
-          shockwaves.splice(i, 1);
-          continue;
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
         }
 
-        ctx.save();
-        ctx.beginPath();
-        ctx.arc(cx, cy, sw.r, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 75, 0, ${sw.opacity})`;
-        ctx.lineWidth = sw.width;
-        ctx.shadowColor = '#ff4500';
-        ctx.shadowBlur = 18;
-        ctx.stroke();
-        ctx.restore();
-      }
-
-      // 4. 수직 이퀄라이저 바
-      if (dataArray) {
-        const barCount = 42;
-        const barWidth = 4.5;
-        const spread = width * 0.40;
-
-        for (let i = 0; i < barCount; i++) {
-          const freqVal = dataArray[i * 2] / 255;
-          const barHeight = freqVal * 125 * (1 + bassSmooth * 0.45);
-          const xOffset = (i / barCount) * spread + baseR * 1.45;
-
-          [-1, 1].forEach(dir => {
-            const bx = cx + (xOffset * dir);
-            const by = cy;
-
-            const barGrad = ctx.createLinearGradient(bx, by - barHeight, bx, by + barHeight);
-            barGrad.addColorStop(0, '#ff7700');
-            barGrad.addColorStop(0.5, '#ff4500');
-            barGrad.addColorStop(1, 'rgba(255, 69, 0, 0)');
-
-            ctx.fillStyle = barGrad;
-            ctx.fillRect(bx - barWidth / 2, by - barHeight, barWidth, barHeight * 2);
-
-            ctx.fillStyle = '#ffffff';
-            ctx.shadowColor = '#ff4500';
-            ctx.shadowBlur = 8;
-            ctx.fillRect(bx - barWidth / 2, by - barHeight - 2, barWidth, 3);
-          });
-        }
-      }
-
-      // 5. 타이포그래피 (CORDELIA 서브 + JBL PREMIUM SOUND ZONE 메인 강조)
-      ctx.save();
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-
-      const textScale = 1 + (bassSmooth * 0.07);
-
-      // (1) 상단 코델리아 라벨
-      ctx.save();
-      ctx.translate(cx, cy - 36);
-      ctx.scale(textScale, textScale);
-
-      ctx.font = '700 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.letterSpacing = '10px';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-      ctx.shadowBlur = 8;
-      ctx.fillText('CORDELIA', 5, 0);
-      ctx.restore();
-
-      // (2) 중앙 메인: JBL PREMIUM SOUND ZONE
-      ctx.save();
-      ctx.translate(cx, cy + 10);
-      ctx.scale(textScale, textScale);
-
-      ctx.font = '900 42px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.letterSpacing = '8px';
-
-      const textGrad = ctx.createLinearGradient(cx - 300, 0, cx + 300, 0);
-      textGrad.addColorStop(0, '#ffffff');
-      textGrad.addColorStop(0.35, '#ff5500');
-      textGrad.addColorStop(1, '#ffffff');
-      ctx.fillStyle = textGrad;
-
-      ctx.shadowColor = 'rgba(255, 69, 0, 0.85)';
-      ctx.shadowBlur = 28 + bassSmooth * 22;
-      ctx.fillText('JBL PREMIUM SOUND ZONE', 4, 0);
-      ctx.restore();
-
-      // (3) 하단 라벨
-      ctx.save();
-      ctx.translate(cx, cy + 56);
-      ctx.scale(textScale, textScale);
-
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(-180, 0);
-      ctx.lineTo(-80, 0);
-      ctx.moveTo(80, 0);
-      ctx.lineTo(180, 0);
-      ctx.stroke();
-
-      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.letterSpacing = '5px';
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-      ctx.shadowBlur = 6;
-      ctx.fillText('HIGH DEFINITION ACOUSTICS', 2.5, 0);
-      ctx.restore();
-
-      ctx.restore();
-
-      // 6. 파티클
-      ctx.save();
-      for (const p of particles) {
-        p.x += p.speedX * (1 + trebleSmooth * 2);
-        p.y += p.speedY * (1 + trebleSmooth * 2);
-
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * (0.6 + trebleSmooth * 0.8)})`;
-        ctx.fill();
-      }
-      ctx.restore();
-    }
-
-    requestAnimationFrame(render);
-  </script>
+        document.addEventListener('keydown', function(e) {
+            if(document.getElementById('app-container').style.display === 'flex') {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+    </script>
 </body>
 </html>
