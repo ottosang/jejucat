@@ -43,6 +43,7 @@
             justify-content: center;
             align-items: center;
             z-index: 9999;
+            padding: 20px;
         }
 
         .login-box {
@@ -50,7 +51,8 @@
             border: 1px solid var(--border-color);
             padding: 40px;
             border-radius: 16px;
-            width: 480px;
+            width: 100%;
+            max-width: 480px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             text-align: center;
         }
@@ -140,11 +142,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
+            padding: 0 20px;
         }
 
         .logo-area {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
         }
 
@@ -152,12 +154,13 @@
             background: #1E293B;
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             color: #94A3B8;
             border: 1px solid #334155;
+            white-space: nowrap;
         }
 
-        /* Slide Viewport */
+        /* Slide Viewport & Scaling Container for Responsive PC/Mobile View */
         .slide-viewport {
             flex: 1;
             position: relative;
@@ -165,7 +168,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            background: var(--bg-dark);
+        }
+
+        .slide-scaler {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            transform-origin: center center;
         }
 
         .slide {
@@ -178,6 +188,8 @@
             padding: 48px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             position: absolute;
+            top: 0;
+            left: 0;
             flex-direction: column;
             justify-content: space-between;
         }
@@ -294,7 +306,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
+            padding: 0 20px;
         }
 
         .nav-btn {
@@ -388,6 +400,19 @@
             font-size: 20px;
             font-weight: bold;
         }
+
+        /* 모바일 화면 대응 미디어쿼리 */
+        @media(max-width: 768px) {
+            .pc-notice {
+                display: none;
+            }
+            header {
+                padding: 0 10px;
+            }
+            .logo-area {
+                font-size: 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -397,7 +422,7 @@
         <div class="login-box">
             <div class="login-header">
                 <div class="login-title"><span class="brand-tag">신한카드 X 디앤테크</span></div>
-                <div style="font-size: 16px; color: #94A3B8;">무인 QR결제 시스템 구축 사업 제안서</div>
+                <div style="font-size: 15px; color: #94A3B8;">무인 QR결제 시스템 구축 사업 제안서</div>
             </div>
             
             <div class="confidentiality-notice">
@@ -418,239 +443,241 @@
                 <span style="color: #0046FF;">Shinhan Card</span> <span style="color: #FFF;">X</span> <span style="color: #FF6B00;">D&TECH</span>
             </div>
             <div class="pc-notice">
-                본 프레젠테이션은 PC 화면(1920x1080 / 16:9) 환경에 최적화되어 있습니다.
+                PC 최적화 화면 (모바일 자동 반응형 연동)
             </div>
         </header>
 
         <div class="slide-viewport">
-            
-            <!-- Slide 1: 표지 -->
-            <div class="slide title-slide active">
-                <div>
-                    <h3>신한카드 X 디앤테크 전략적 제안</h3>
-                    <h1>차세대 무인 QR결제 인프라 구축 및<br>제주·전국 무인 시장 마케팅 제안서</h1>
-                    <p style="color: #94A3B8; margin-bottom: 40px;">자판기, 가챠숍, 아케이드 오락기계 무인 QR결제 솔루션 및 신한 SOL페이 락인(Lock-in) 전략</p>
-                </div>
-                <div class="title-meta">
-                    <div><strong>발행처:</strong> 신한카드 X 주식회사 디앤테크</div>
-                    <div><strong>일자:</strong> 2026년 10월</div>
-                    <div><strong>보안등급:</strong> 대외비 (Confidential)</div>
-                </div>
-            </div>
-
-            <!-- Slide 2: 제휴 개요 및 핵심 혜택 -->
-            <div class="slide">
-                <div class="slide-header">
-                    <div class="slide-subtitle">PARTNER OVERVIEW</div>
-                    <div class="slide-title">1. 신한카드 X 디앤테크 핵심 제휴 구조</div>
-                </div>
-                <div class="slide-body">
-                    <div class="grid-3">
-                        <div class="card">
-                            <div class="card-header">신한카드 (SOL페이)</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>단말기 설치 지원:</strong> 자판기/오락기 1대당 8만 원 상당 디앤테크 QR단말 지원</li>
-                                    <li><strong>SOL페이 결제 혜택:</strong> SOL페이 결제 고객 대상 10% 즉시 할인 혜택 타겟 마케팅</li>
-                                    <li><strong>MZ 접점 확대:</strong> 가챠숍/무인매장을 통한 신규 고객의 친근한 SOL페이 유입</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">디앤테크 (D&TECH)</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>QR 결제 솔루션:</strong> 자판기/오락기 연동 하드웨어 및 서버 API 개발 제공</li>
-                                    <li><strong>원격 제어 시스템:</strong> 신한 SOL페이 결제 승인 시 투출구/게임 구동 실시간 통신</li>
-                                    <li><strong>과다사용 방지:</strong> FDS(이상거래탐지) 연동 및 사행성 대응 시스템 탑재</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">자판기/매장 운영업체</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>초기 구축비 절감:</strong> 단말기 지원금으로 단말기 도입 비용 부담 최소화</li>
-                                    <li><strong>집객 유도:</strong> 10% 할인 프로모션 및 위치 홍보로 신규 고객 유입 증대</li>
-                                    <li><strong>운영 효율화:</strong> 현금 관리 부담 해소 및 24시간 무인 매출 증대 효과</li>
-                                </ul>
-                            </div>
-                        </div>
+            <div class="slide-scaler" id="scaler">
+                
+                <!-- Slide 1: 표지 -->
+                <div class="slide title-slide active">
+                    <div>
+                        <h3>신한카드 X 디앤테크 전략적 제안</h3>
+                        <h1>차세대 무인 QR결제 인프라 구축 및<br>제주·전국 무인 시장 마케팅 제안서</h1>
+                        <p style="color: #94A3B8; margin-bottom: 40px;">자판기, 가챠숍, 아케이드 오락기계 무인 QR결제 솔루션 및 신한 SOL페이 락인(Lock-in) 전략</p>
+                    </div>
+                    <div class="title-meta">
+                        <div><strong>발행처:</strong> 신한카드 X 주식회사 디앤테크</div>
+                        <div><strong>일자:</strong> 2026년 10월</div>
+                        <div><strong>보안등급:</strong> 대외비 (Confidential)</div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Slide 3: 시장 규모 및 제주도 현황 -->
-            <div class="slide">
-                <div class="slide-header">
-                    <div class="slide-subtitle">MARKET ANALYSIS</div>
-                    <div class="slide-title">2. 제주도 및 전국 타겟 시장 규모 분석</div>
-                </div>
-                <div class="slide-body">
-                    <div class="grid-2">
-                        <div class="card">
-                            <div class="card-header">제주도 내 타겟 무인 기기 시장</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>일반 자판기:</strong> 관광지, 올레길, 숙박시설, 버스정류장 등 약 3,500대 분포</li>
-                                    <li><strong>가챠숍 & 퍼니박스:</strong> 제주시/서귀포시 번화가 및 무인 매장 약 450대 이상</li>
-                                    <li><strong>아케이드 & 오락기계:</strong> 호텔 리조트 내 오락실, 인형뽑기방 약 800대</li>
-                                    <li><strong>특수 분석:</strong> 인력난 및 관광객 유입 대응을 위해 무인 결제 단말 수요 급증 중</li>
-                                </ul>
-                                <div class="highlight-box">
-                                    <div class="highlight-title">제주도 타겟 도합 수량</div>
-                                    <div style="font-size: 20px; font-weight: 800; color: #FFF;">약 4,750대 + 알파</div>
+                <!-- Slide 2: 제휴 개요 및 핵심 혜택 -->
+                <div class="slide">
+                    <div class="slide-header">
+                        <div class="slide-subtitle">PARTNER OVERVIEW</div>
+                        <div class="slide-title">1. 신한카드 X 디앤테크 핵심 제휴 구조</div>
+                    </div>
+                    <div class="slide-body">
+                        <div class="grid-3">
+                            <div class="card">
+                                <div class="card-header">신한카드 (SOL페이)</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>단말기 설치 지원:</strong> 자판기/오락기 1대당 8만 원 상당 디앤테크 QR단말 지원</li>
+                                        <li><strong>SOL페이 결제 혜택:</strong> SOL페이 결제 고객 대상 10% 즉시 할인 혜택 타겟 마케팅</li>
+                                        <li><strong>MZ 접점 확대:</strong> 가챠숍/무인매장을 통한 신규 고객의 친근한 SOL페이 유입</li>
+                                    </ul>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">전국 자판기 및 무인 시장 확장성</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>전국 음료/스낵 자판기:</strong> 약 30만 대 규모 (카드/QR 전환율 지속 증가)</li>
-                                    <li><strong>무인 캡슐토이/퍼니박스:</strong> 약 4만 대 (MZ세대 및 펀슈머 트렌드 중심)</li>
-                                    <li><strong>무인 아케이드/뽑기 기계:</strong> 전국 약 7만 대 분포</li>
-                                    <li><strong>전환 목표:</strong> 1차 제주 시범사업 후 전국 10,000대 지원망 확장 계획</li>
-                                </ul>
-                                <div class="highlight-box">
-                                    <div class="highlight-title">신한 SOL페이 락인 효과</div>
-                                    <div style="color: #E2E8F0; font-size: 13px;">MZ세대가 친숙하게 이용하는 가챠·자판기 채널을 통해 신규 고객 유입 극대화</div>
+                            <div class="card">
+                                <div class="card-header">디앤테크 (D&TECH)</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>QR 결제 솔루션:</strong> 자판기/오락기 연동 하드웨어 및 서버 API 개발 제공</li>
+                                        <li><strong>원격 제어 시스템:</strong> 신한 SOL페이 결제 승인 시 투출구/게임 구동 실시간 통신</li>
+                                        <li><strong>과다사용 방지:</strong> FDS(이상거래탐지) 연동 및 사행성 대응 시스템 탑재</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">자판기/매장 운영업체</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>초기 구축비 절감:</strong> 단말기 지원금으로 단말기 도입 비용 부담 최소화</li>
+                                        <li><strong>집객 유도:</strong> 10% 할인 프로모션 및 위치 홍보로 신규 고객 유입 증대</li>
+                                        <li><strong>운영 효율화:</strong> 현금 관리 부담 해소 및 24시간 무인 매출 증대 효과</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Slide 4: 시스템 구조 및 결제 프로세스 -->
-            <div class="slide">
-                <div class="slide-header">
-                    <div class="slide-subtitle">SYSTEM ARCHITECTURE</div>
-                    <div class="slide-title">3. 무인 QR결제 시스템 설치 및 통신 구조</div>
-                </div>
-                <div class="slide-body" style="flex-direction: column;">
-                    <p style="color: var(--text-sub); margin-bottom: 12px;">고객 스마트폰 스캔부터 자판기/오락기 투출까지 1.5초 이내 실시간 신호 연동 흐름도</p>
-                    <div class="step-flow">
-                        <div class="step-item">
-                            <div class="step-num">1</div>
-                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">QR 스캔</div>
-                            <div style="font-size: 12px; color: #94A3B8;">자판기 전면 부착 QR을 신한 SOL페이로 스캔</div>
-                        </div>
-                        <div class="step-arrow">➔</div>
-                        <div class="step-item">
-                            <div class="step-num">2</div>
-                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">10% 할인 결제</div>
-                            <div style="font-size: 12px; color: #94A3B8;">SOL페이 승인 (신한카드 PG/서버 통신)</div>
-                        </div>
-                        <div class="step-arrow">➔</div>
-                        <div class="step-item">
-                            <div class="step-num">3</div>
-                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 서버</div>
-                            <div style="font-size: 12px; color: #94A3B8;">결제 성공 신호 수신 및 자판기 ID 검증</div>
-                        </div>
-                        <div class="step-arrow">➔</div>
-                        <div class="step-item">
-                            <div class="step-num">4</div>
-                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 단말기</div>
-                            <div style="font-size: 12px; color: #94A3B8;">LTE/Wi-Fi 모듈을 통해 기기 메인보드 제어</div>
-                        </div>
-                        <div class="step-arrow">➔</div>
-                        <div class="step-item">
-                            <div class="step-num">5</div>
-                            <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">상품 투출 / 구동</div>
-                            <div style="font-size: 12px; color: #94A3B8;">투출구 개방 또는 게임 크레딧 지급</div>
-                        </div>
+                <!-- Slide 3: 시장 규모 및 제주도 현황 -->
+                <div class="slide">
+                    <div class="slide-header">
+                        <div class="slide-subtitle">MARKET ANALYSIS</div>
+                        <div class="slide-title">2. 제주도 및 전국 타겟 시장 규모 분석</div>
                     </div>
-
-                    <div class="grid-2" style="margin-top: 24px;">
-                        <div class="card">
-                            <div class="card-header">디앤테크 릴레이/API 단말 장점</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li>기존 자판기 메인보드 손상 없이 10분 내 간편 장착 가능</li>
-                                    <li>퍼니박스, 캡슐토이, 일반 음료 자판기 전 기종 규격 호환</li>
-                                </ul>
+                    <div class="slide-body">
+                        <div class="grid-2">
+                            <div class="card">
+                                <div class="card-header">제주도 내 타겟 무인 기기 시장</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>일반 자판기:</strong> 관광지, 올레길, 숙박시설, 버스정류장 등 약 3,500대 분포</li>
+                                        <li><strong>가챠숍 & 퍼니박스:</strong> 제주시/서귀포시 번화가 및 무인 매장 약 450대 이상</li>
+                                        <li><strong>아케이드 & 오락기계:</strong> 호텔 리조트 내 오락실, 인형뽑기방 약 800대</li>
+                                        <li><strong>특수 분석:</strong> 인력난 및 관광객 유입 대응을 위해 무인 결제 단말 수요 급증 중</li>
+                                    </ul>
+                                    <div class="highlight-box">
+                                        <div class="highlight-title">제주도 타겟 도합 수량</div>
+                                        <div style="font-size: 20px; font-weight: 800; color: #FFF;">약 4,750대 + 알파</div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">신한 SOL페이 위치 기반 홍보 연동</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li>SOL페이 내 "My 자판기/가챠 Map"을 통해 인근 설치 장소 노출</li>
-                                    <li>관광지 주변 접근 시 "SOL페이 10% 할인 자판기" PUSH 알림 발송</li>
-                                </ul>
+                            <div class="card">
+                                <div class="card-header">전국 자판기 및 무인 시장 확장성</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>전국 음료/스낵 자판기:</strong> 약 30만 대 규모 (카드/QR 전환율 지속 증가)</li>
+                                        <li><strong>무인 캡슐토이/퍼니박스:</strong> 약 4만 대 (MZ세대 및 펀슈머 트렌드 중심)</li>
+                                        <li><strong>무인 아케이드/뽑기 기계:</strong> 전국 약 7만 대 분포</li>
+                                        <li><strong>전환 목표:</strong> 1차 제주 시범사업 후 전국 10,000대 지원망 확장 계획</li>
+                                    </ul>
+                                    <div class="highlight-box">
+                                        <div class="highlight-title">신한 SOL페이 락인 효과</div>
+                                        <div style="color: #E2E8F0; font-size: 13px;">MZ세대가 친숙하게 이용하는 가챠·자판기 채널을 통해 신규 고객 유입 극대화</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Slide 5: 과다사용 및 사행성 논란 대응 방안 -->
-            <div class="slide">
-                <div class="slide-header">
-                    <div class="slide-subtitle">COMPLIANCE & ESG</div>
-                    <div class="slide-title">4. 사행성 논란 방지 및 소비자 보호 방안</div>
-                </div>
-                <div class="slide-body">
-                    <div class="grid-2">
-                        <div class="card">
-                            <div class="card-header" style="color: #FF6B00;">예상 규제 및 사회적 이슈</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>과다사용 유도:</strong> 간편 QR 결제로 인한 청소년 및 이용자의 무분별한 연속 결제</li>
-                                    <li><strong>사행성 조장:</strong> 가챠/퍼니박스/인형뽑기 등의 확률형 구조에 대한 소비자 불만</li>
-                                    <li><strong>법적 리스크:</strong> 게임산업진흥법(경품 가액 제한), 전자상거래법(확률 미공시) 이슈</li>
-                                </ul>
+                <!-- Slide 4: 시스템 구조 및 결제 프로세스 -->
+                <div class="slide">
+                    <div class="slide-header">
+                        <div class="slide-subtitle">SYSTEM ARCHITECTURE</div>
+                        <div class="slide-title">3. 무인 QR결제 시스템 설치 및 통신 구조</div>
+                    </div>
+                    <div class="slide-body" style="flex-direction: column;">
+                        <p style="color: var(--text-sub); margin-bottom: 12px;">고객 스마트폰 스캔부터 자판기/오락기 투출까지 1.5초 이내 실시간 신호 연동 흐름도</p>
+                        <div class="step-flow">
+                            <div class="step-item">
+                                <div class="step-num">1</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">QR 스캔</div>
+                                <div style="font-size: 12px; color: #94A3B8;">자판기 전면 부착 QR을 신한 SOL페이로 스캔</div>
+                            </div>
+                            <div class="step-arrow">➔</div>
+                            <div class="step-item">
+                                <div class="step-num">2</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">10% 할인 결제</div>
+                                <div style="font-size: 12px; color: #94A3B8;">SOL페이 승인 (신한카드 PG/서버 통신)</div>
+                            </div>
+                            <div class="step-arrow">➔</div>
+                            <div class="step-item">
+                                <div class="step-num">3</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 서버</div>
+                                <div style="font-size: 12px; color: #94A3B8;">결제 성공 신호 수신 및 자판기 ID 검증</div>
+                            </div>
+                            <div class="step-arrow">➔</div>
+                            <div class="step-item">
+                                <div class="step-num">4</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 단말기</div>
+                                <div style="font-size: 12px; color: #94A3B8;">LTE/Wi-Fi 모듈을 통해 기기 메인보드 제어</div>
+                            </div>
+                            <div class="step-arrow">➔</div>
+                            <div class="step-item">
+                                <div class="step-num">5</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">상품 투출 / 구동</div>
+                                <div style="font-size: 12px; color: #94A3B8;">투출구 개방 또는 게임 크레딧 지급</div>
                             </div>
                         </div>
-                        <div class="card">
-                            <div class="card-header" style="color: #10B981;">신한카드 X 디앤테크 안심 솔루션</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>1일/1인 결제 한도 제한 (FDS):</strong> 동일 계정 기준 하루 최대 5회 또는 3만 원 초과 시 자동 결제 차단 시스템 탑재</li>
-                                    <li><strong>확률 및 상품 정보 QR 명시:</strong> QR 스캔 시 결제 전 상품 구성 및 확률 정보 투명 공개 화면 제공</li>
-                                    <li><strong>청소년 보호 시간 차단:</strong> 야간 시간(22:00~09:00) 청소년 카드/계정의 아케이드 기기 결제 제어</li>
-                                    <li><strong>경품 가액 법적 준수:</strong> 게임법 가이드라인(만원 이하) 준수 매장만 제휴 지원 대상 선정</li>
-                                </ul>
+
+                        <div class="grid-2" style="margin-top: 24px;">
+                            <div class="card">
+                                <div class="card-header">디앤테크 릴레이/API 단말 장점</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>기존 자판기 메인보드 손상 없이 10분 내 간편 장착 가능</li>
+                                        <li>퍼니박스, 캡슐토이, 일반 음료 자판기 전 기종 규격 호환</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">신한 SOL페이 위치 기반 홍보 연동</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li>SOL페이 내 "My 자판기/가챠 Map"을 통해 인근 설치 장소 노출</li>
+                                        <li>관광지 주변 접근 시 "SOL페이 10% 할인 자판기" PUSH 알림 발송</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Slide 6: 시범 사업 추진 및 향후 기대효과 -->
-            <div class="slide">
-                <div class="slide-header">
-                    <div class="slide-subtitle">ROADMAP & OUTLOOK</div>
-                    <div class="slide-title">5. 1차 시범 사업 계획 및 마케팅 기대효과</div>
-                </div>
-                <div class="slide-body">
-                    <div class="grid-2">
-                        <div class="card">
-                            <div class="card-header">1차 시범 사업 (11월 제주 300대)</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>설치 규모:</strong> 11월 중 제주 주요 거점 지역 내 300대 시범 설치</li>
-                                    <li><strong>판매 데이터 수집:</strong> SOL페이 결제 비중, 시간대별/상품별 매출 데이터 축적</li>
-                                    <li><strong>개선사항 모니터링:</strong> 현장 결제 통신 성공률 및 이용자 C/S 반응 집중 체크</li>
-                                    <li><strong>효과 검증:</strong> 10% 할인 프로모션에 따른 유입 상승률 및 락인 효과 분석</li>
-                                </ul>
+                <!-- Slide 5: 과다사용 및 사행성 논란 대응 방안 -->
+                <div class="slide">
+                    <div class="slide-header">
+                        <div class="slide-subtitle">COMPLIANCE & ESG</div>
+                        <div class="slide-title">4. 사행성 논란 방지 및 소비자 보호 방안</div>
+                    </div>
+                    <div class="slide-body">
+                        <div class="grid-2">
+                            <div class="card">
+                                <div class="card-header" style="color: #FF6B00;">예상 규제 및 사회적 이슈</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>과다사용 유도:</strong> 간편 QR 결제로 인한 청소년 및 이용자의 무분별한 연속 결제</li>
+                                        <li><strong>사행성 조장:</strong> 가챠/퍼니박스/인형뽑기 등의 확률형 구조에 대한 소비자 불만</li>
+                                        <li><strong>법적 리스크:</strong> 게임산업진흥법(경품 가액 제한), 전자상거래법(확률 미공시) 이슈</li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-header">MZ 타겟 락인 및 제휴 기대효과</div>
-                            <div class="card-body">
-                                <ul>
-                                    <li><strong>MZ세대 친화적 접근:</strong> 가챠숍, 퍼니박스 등 젊은 세대가 선호하는 놀이 문화 공간에 결합하여 거부감 없는 서비스 제공</li>
-                                    <li><strong>신규 고객 락인 효과:</strong> 일상 소액 결제 채널을 통해 신한카드의 새로운 신규 고객들이 SOL페이에 자연스럽고 친근하게 정착</li>
-                                    <li><strong>플랫폼 확장:</strong> 제주 시범사업 성공 레퍼런스를 바탕으로 전국 무인 매장 네트워크로 즉시 확장</li>
-                                </ul>
+                            <div class="card">
+                                <div class="card-header" style="color: #10B981;">신한카드 X 디앤테크 안심 솔루션</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>1일/1인 결제 한도 제한 (FDS):</strong> 동일 계정 기준 하루 최대 5회 또는 3만 원 초과 시 자동 결제 차단 시스템 탑재</li>
+                                        <li><strong>확률 및 상품 정보 QR 명시:</strong> QR 스캔 시 결제 전 상품 구성 및 확률 정보 투명 공개 화면 제공</li>
+                                        <li><strong>청소년 보호 시간 차단:</strong> 야간 시간(22:00~09:00) 청소년 카드/계정의 아케이드 기기 결제 제어</li>
+                                        <li><strong>경품 가액 법적 준수:</strong> 게임법 가이드라인(만원 이하) 준수 매장만 제휴 지원 대상 선정</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
+                <!-- Slide 6: 시범 사업 추진 및 향후 기대효과 -->
+                <div class="slide">
+                    <div class="slide-header">
+                        <div class="slide-subtitle">ROADMAP & OUTLOOK</div>
+                        <div class="slide-title">5. 1차 시범 사업 계획 및 마케팅 기대효과</div>
+                    </div>
+                    <div class="slide-body">
+                        <div class="grid-2">
+                            <div class="card">
+                                <div class="card-header">1차 시범 사업 (11월 제주 300대)</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>설치 규모:</strong> 11월 중 제주 주요 거점 지역 내 300대 시범 설치</li>
+                                        <li><strong>판매 데이터 수집:</strong> SOL페이 결제 비중, 시간대별/상품별 매출 데이터 축적</li>
+                                        <li><strong>개선사항 모니터링:</strong> 현장 결제 통신 성공률 및 이용자 C/S 반응 집중 체크</li>
+                                        <li><strong>효과 검증:</strong> 10% 할인 프로모션에 따른 유입 상승률 및 락인 효과 분석</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header">MZ 타겟 락인 및 제휴 기대효과</div>
+                                <div class="card-body">
+                                    <ul>
+                                        <li><strong>MZ세대 친화적 접근:</strong> 가챠숍, 퍼니박스 등 젊은 세대가 선호하는 놀이 문화 공간에 결합하여 거부감 없는 서비스 제공</li>
+                                        <li><strong>신규 고객 락인 효과:</strong> 일상 소액 결제 채널을 통해 신한카드의 새로운 신규 고객들이 SOL페이에 자연스럽고 친근하게 정착</li>
+                                        <li><strong>플랫폼 확장:</strong> 제주 시범사업 성공 레퍼런스를 바탕으로 전국 무인 매장 네트워크로 즉시 확장</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <footer>
@@ -672,6 +699,8 @@
             if(pwd === '0220') {
                 document.getElementById('login-modal').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
+                // 화면 스케일 계산 실행
+                updateScale();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
             }
@@ -683,36 +712,19 @@
             }
         });
 
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active');
-                if(i === index) {
-                    slide.classList.add('active');
-                }
-            });
-            document.getElementById('current-slide').innerText = index + 1;
-        }
-
-        function nextSlide() {
-            if (currentSlide < totalSlides - 1) {
-                currentSlide++;
-                showSlide(currentSlide);
-            }
-        }
-
-        function prevSlide() {
-            if (currentSlide > 0) {
-                currentSlide--;
-                showSlide(currentSlide);
-            }
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if(document.getElementById('app-container').style.display === 'flex') {
-                if (e.key === 'ArrowRight') nextSlide();
-                if (e.key === 'ArrowLeft') prevSlide();
-            }
-        });
-    </script>
-</body>
-</html>
+        // 반응형 스케일 자동 조절 함수 (PC 16:9 비율 고정 + 모바일 화면 자동 축소 연동)
+        function updateScale() {
+            const scaler = document.getElementById('scaler');
+            const viewport = document.querySelector('.slide-viewport');
+            
+            const vWidth = viewport.clientWidth;
+            const vHeight = viewport.clientHeight;
+            
+            const baseWidth = 1280;
+            const baseHeight = 720;
+            
+            const scaleX = vWidth / baseWidth;
+            const scaleY = vHeight / baseHeight;
+            const scale = Math.min(scaleX, scaleY) * 0.95; // 약간의 여백 확보
+            
+            scaler
