@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>신한카드 X 디앤테크 무인 QR결제 시스템 구축 사업 제안서</title>
+    <title>신한카드 X DN tech 무인 QR결제 시스템 구축 사업 제안서</title>
     <style>
         :root {
             --primary-color: #0046FF;
             --secondary-color: #002288;
             --accent-color: #FF6B00;
+            --dn-blue: #0066CC;
+            --dn-green: #66CC00;
             --bg-dark: #0A0E17;
             --bg-card: #161F30;
             --text-main: #F0F4F8;
@@ -148,6 +150,28 @@
         .logo-area {
             font-size: 16px;
             font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 명함 기반 DN tech 로고 스타일 구현 */
+        .dn-logo-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #fff;
+            padding: 4px 10px;
+            border-radius: 4px;
+        }
+
+        .dn-logo-icon {
+            width: 18px;
+            height: 18px;
+            display: inline-block;
+            background: linear-gradient(135deg, #0088CC 0%, #66CC00 100%);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E") no-repeat center;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/%3E%3C/svg%3E") no-repeat center;
         }
 
         .pc-notice {
@@ -160,7 +184,7 @@
             white-space: nowrap;
         }
 
-        /* Slide Viewport & Scaling Container for Responsive PC/Mobile View */
+        /* Slide Viewport & Scaling Container */
         .slide-viewport {
             flex: 1;
             position: relative;
@@ -340,7 +364,7 @@
         }
 
         .title-slide h1 {
-            font-size: 42px;
+            font-size: 40px;
             font-weight: 800;
             margin-bottom: 16px;
             background: linear-gradient(to right, #FFF, #93C5FD);
@@ -349,19 +373,23 @@
         }
 
         .title-slide h3 {
-            font-size: 20px;
+            font-size: 18px;
             color: var(--primary-color);
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             font-weight: 600;
         }
 
         .title-meta {
-            display: flex;
-            gap: 24px;
-            font-size: 14px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            font-size: 13px;
             color: var(--text-sub);
             border-top: 1px solid var(--border-color);
-            padding-top: 24px;
+            padding-top: 20px;
+            text-align: left;
+            width: 100%;
+            max-width: 900px;
         }
 
         .step-flow {
@@ -401,7 +429,6 @@
             font-weight: bold;
         }
 
-        /* 모바일 화면 대응 미디어쿼리 */
         @media(max-width: 768px) {
             .pc-notice {
                 display: none;
@@ -410,7 +437,7 @@
                 padding: 0 10px;
             }
             .logo-area {
-                font-size: 14px;
+                font-size: 13px;
             }
         }
     </style>
@@ -421,13 +448,13 @@
     <div id="login-modal">
         <div class="login-box">
             <div class="login-header">
-                <div class="login-title"><span class="brand-tag">신한카드 X 디앤테크</span></div>
+                <div class="login-title"><span class="brand-tag">신한카드 X DN tech</span></div>
                 <div style="font-size: 15px; color: #94A3B8;">무인 QR결제 시스템 구축 사업 제안서</div>
             </div>
             
             <div class="confidentiality-notice">
                 <strong>비밀유지 서약 (Confidentiality Notice)</strong><br>
-                본 제안서의 모든 내용(기술 구조, 제휴 조건, 시장 데이터 및 비즈니스 모델)은 신한카드 및 디앤테크의 영업비밀에 해당합니다. 무단 전재, 복사, 외부 유출을 엄격히 금합니다.
+                본 제안서의 모든 내용(기술 구조, 제휴 조건, 시장 데이터 및 비즈니스 모델)은 신한카드 및 주식회사 디앤테크의 영업비밀에 해당합니다. 무단 전재, 복사, 외부 유출을 엄격히 금합니다.
             </div>
 
             <input type="password" id="password-input" class="login-input" placeholder="비밀번호 입력" maxlength="4">
@@ -440,7 +467,11 @@
     <div id="app-container">
         <header>
             <div class="logo-area">
-                <span style="color: #0046FF;">Shinhan Card</span> <span style="color: #FFF;">X</span> <span style="color: #FF6B00;">D&TECH</span>
+                <span style="color: #0046FF;">Shinhan Card</span> <span style="color: #FFF;">×</span> 
+                <div class="dn-logo-box">
+                    <span style="color: #0066CC; font-weight:800;">DN</span> <span style="color: #66CC00; font-weight:700;">tech</span>
+                    <span style="font-size:10px; color:#333; font-weight:600; margin-left:2px;">디앤테크</span>
+                </div>
             </div>
             <div class="pc-notice">
                 PC 최적화 화면 (모바일 자동 반응형 연동)
@@ -450,17 +481,24 @@
         <div class="slide-viewport">
             <div class="slide-scaler" id="scaler">
                 
-                <!-- Slide 1: 표지 -->
+                <!-- Slide 1: 표지 (회사 정보 명함 반영) -->
                 <div class="slide title-slide active">
                     <div>
-                        <h3>신한카드 X 디앤테크 전략적 제안</h3>
+                        <h3>신한카드 X 주식회사 디앤테크(DN tech) 전략적 제안</h3>
                         <h1>차세대 무인 QR결제 인프라 구축 및<br>제주·전국 무인 시장 마케팅 제안서</h1>
-                        <p style="color: #94A3B8; margin-bottom: 40px;">자판기, 가챠숍, 아케이드 오락기계 무인 QR결제 솔루션 및 신한 SOL페이 락인(Lock-in) 전략</p>
+                        <p style="color: #94A3B8; margin-bottom: 20px;">자판기, 가챠숍, 아케이드 오락기계 무인 QR결제 솔루션 및 신한 SOL페이 락인(Lock-in) 전략</p>
                     </div>
                     <div class="title-meta">
-                        <div><strong>발행처:</strong> 신한카드 X 주식회사 디앤테크</div>
-                        <div><strong>일자:</strong> 2026년 10월</div>
-                        <div><strong>보안등급:</strong> 대외비 (Confidential)</div>
+                        <div>
+                            <strong>제안사 (DN tech):</strong> 주식회사 디앤테크 (대표이사 김상훈)<br>
+                            <strong>제주본점:</strong> 제주특별자치도 서귀포시 성산읍 난산로 4<br>
+                            <strong>서울사무소:</strong> 서울 금천구 가산디지털1로 219 벽산디지털밸리6차 404호
+                        </div>
+                        <div>
+                            <strong>연락처:</strong> M. 010-6645-0220 / T. 070-4518-9444<br>
+                            <strong>이메일/웹:</strong> jcardsys@naver.com / www.iokey.kr<br>
+                            <strong>일자/보안:</strong> 2026년 10월 / 대외비 (Confidential)
+                        </div>
                     </div>
                 </div>
 
@@ -468,7 +506,7 @@
                 <div class="slide">
                     <div class="slide-header">
                         <div class="slide-subtitle">PARTNER OVERVIEW</div>
-                        <div class="slide-title">1. 신한카드 X 디앤테크 핵심 제휴 구조</div>
+                        <div class="slide-title">1. 신한카드 X DN tech 핵심 제휴 구조</div>
                     </div>
                     <div class="slide-body">
                         <div class="grid-3">
@@ -476,14 +514,14 @@
                                 <div class="card-header">신한카드 (SOL페이)</div>
                                 <div class="card-body">
                                     <ul>
-                                        <li><strong>단말기 설치 지원:</strong> 자판기/오락기 1대당 8만 원 상당 디앤테크 QR단말 지원</li>
+                                        <li><strong>단말기 설치 지원:</strong> 자판기/오락기 1대당 8만 원 상당 DN tech QR단말 지원</li>
                                         <li><strong>SOL페이 결제 혜택:</strong> SOL페이 결제 고객 대상 10% 즉시 할인 혜택 타겟 마케팅</li>
                                         <li><strong>MZ 접점 확대:</strong> 가챠숍/무인매장을 통한 신규 고객의 친근한 SOL페이 유입</li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-header">디앤테크 (D&TECH)</div>
+                                <div class="card-header">디앤테크 (DN tech)</div>
                                 <div class="card-body">
                                     <ul>
                                         <li><strong>QR 결제 솔루션:</strong> 자판기/오락기 연동 하드웨어 및 서버 API 개발 제공</li>
@@ -571,13 +609,13 @@
                             <div class="step-arrow">➔</div>
                             <div class="step-item">
                                 <div class="step-num">3</div>
-                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 서버</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">DN tech 서버</div>
                                 <div style="font-size: 12px; color: #94A3B8;">결제 성공 신호 수신 및 자판기 ID 검증</div>
                             </div>
                             <div class="step-arrow">➔</div>
                             <div class="step-item">
                                 <div class="step-num">4</div>
-                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">디앤테크 단말기</div>
+                                <div style="font-weight: 700; color: #FFF; margin-bottom: 4px;">DN tech 단말기</div>
                                 <div style="font-size: 12px; color: #94A3B8;">LTE/Wi-Fi 모듈을 통해 기기 메인보드 제어</div>
                             </div>
                             <div class="step-arrow">➔</div>
@@ -590,7 +628,7 @@
 
                         <div class="grid-2" style="margin-top: 24px;">
                             <div class="card">
-                                <div class="card-header">디앤테크 릴레이/API 단말 장점</div>
+                                <div class="card-header">DN tech 릴레이/API 단말 장점</div>
                                 <div class="card-body">
                                     <ul>
                                         <li>기존 자판기 메인보드 손상 없이 10분 내 간편 장착 가능</li>
@@ -630,7 +668,7 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-header" style="color: #10B981;">신한카드 X 디앤테크 안심 솔루션</div>
+                                <div class="card-header" style="color: #10B981;">신한카드 X DN tech 안심 솔루션</div>
                                 <div class="card-body">
                                     <ul>
                                         <li><strong>1일/1인 결제 한도 제한 (FDS):</strong> 동일 계정 기준 하루 최대 5회 또는 3만 원 초과 시 자동 결제 차단 시스템 탑재</li>
@@ -699,7 +737,6 @@
             if(pwd === '0220') {
                 document.getElementById('login-modal').style.display = 'none';
                 document.getElementById('app-container').style.display = 'flex';
-                // 화면 스케일 계산 실행
                 updateScale();
             } else {
                 document.getElementById('error-msg').style.display = 'block';
@@ -712,7 +749,6 @@
             }
         });
 
-        // 반응형 스케일 자동 조절 함수 (PC 16:9 비율 고정 + 모바일 화면 자동 축소 연동)
         function updateScale() {
             const scaler = document.getElementById('scaler');
             const viewport = document.querySelector('.slide-viewport');
@@ -725,6 +761,50 @@
             
             const scaleX = vWidth / baseWidth;
             const scaleY = vHeight / baseHeight;
-            const scale = Math.min(scaleX, scaleY) * 0.95; // 약간의 여백 확보
+            const scale = Math.min(scaleX, scaleY) * 0.95;
             
-            scaler
+            scaler.style.transform = `scale(${scale})`;
+            scaler.style.width = `${baseWidth}px`;
+            scaler.style.height = `${baseHeight}px`;
+            scaler.style.position = 'absolute';
+        }
+
+        window.addEventListener('resize', () => {
+            if(document.getElementById('app-container').style.display === 'flex') {
+                updateScale();
+            }
+        });
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if(i === index) {
+                    slide.classList.add('active');
+                }
+            });
+            document.getElementById('current-slide').innerText = index + 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                showSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                showSlide(currentSlide);
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if(document.getElementById('app-container').style.display === 'flex') {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>
